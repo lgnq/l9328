@@ -1,0 +1,34 @@
+Import('RTT_ROOT')
+Import('rtconfig')
+from building import *
+
+# get current directory
+cwd = GetCurrentDir()
+
+src = Split("""
+board.c
+led.c
+usart.c
+serial.c
+stm32f10x_it.c
+""")
+
+# add spi driver.
+if GetDepend('RT_USING_SPI') == True:
+	src += ['stm32f20x_40x_spi.c']
+	src += ['spi_flash_w25qxx.c']
+
+# add spi driver.
+if GetDepend('RT_USING_I2C') == True:
+	src += ['stm32_i2c.c']
+	src += ['codec_wm8978_i2c.c']
+
+# add RTC driver.
+if GetDepend('RT_USING_RTC') == True:
+	src+= ['rtc.c']
+
+CPPPATH = [cwd]
+
+group = DefineGroup('drivers', src, depend = [''], CPPPATH = CPPPATH)
+
+Return('group')

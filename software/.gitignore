@@ -1,0 +1,13 @@
+*/build
+*.dep
+*.bin
+*.map
+*.axf
+*.pyc
+*.bin
+*.o
+
+.sconsign.dblite
+project.uvproj
+project.uvopt
+project.uvgui.*
