@@ -21,10 +21,14 @@
 #include <board.h>
 #include <rtthread.h>
 
+#ifdef RT_USING_COMPONENTS_INIT
+#include <components_init.h>
+#endif
+
 #include "led.h"
 
 ALIGN(RT_ALIGN_SIZE)
-static rt_uint8_t led_stack[ 512 ];
+static rt_uint8_t led_stack[512];
 static struct rt_thread led_thread;
 static void led_thread_entry(void *parameter)
 {
@@ -53,6 +57,10 @@ static void led_thread_entry(void *parameter)
 
 void rt_init_thread_entry(void *parameter)
 {
+#ifdef RT_USING_COMPONENTS_INIT
+    /* initialization RT-Thread Components */
+    rt_components_init();
+#endif
 }
 
 int rt_application_init(void)

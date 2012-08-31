@@ -61,10 +61,17 @@
 #define RT_USING_DEVICE
 #define RT_USING_UART1
 
-/* SECTION: Console options */
+// <section name="RT_USING_CONSOLE" description="Using console" default="true" >
 #define RT_USING_CONSOLE
-/* the buffer size of console*/
+// <integer name="RT_CONSOLEBUF_SIZE" description="The buffer size for console output" default="128" />
 #define RT_CONSOLEBUF_SIZE	128
+// <string name="RT_CONSOLE_DEVICE_NAME" description="console device name" default="uart3" />
+#define RT_CONSOLE_DEVICE_NAME	"uart1"
+// </section>
+
+// <section name="RT_USING_COMPONENTS_INIT" description="Using components init" default="true" >
+#define RT_USING_COMPONENTS_INIT
+// </section>
 
 /* SECTION: finsh, a C-Express shell */
 #define RT_USING_FINSH

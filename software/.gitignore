@@ -7,6 +7,17 @@
 *.bin
 *.o
 
+*.IAB
+*.IAD
+*.IMB
+*.IMD
+*.PFI
+*.PO
+*.PR
+*.PRI
+*.PS
+*.WK3
+
 .sconsign.dblite
 project.uvproj
 project.uvopt
