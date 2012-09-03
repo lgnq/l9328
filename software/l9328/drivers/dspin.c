@@ -351,6 +351,42 @@ void dSPIN_Move(dSPIN_Direction_TypeDef direction, uint32_t n_step)
 	dSPIN_Write_Byte((uint8_t)(n_step));
 }
 
+void move(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_steps, dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_steps)
+{
+	/* Send Move operation code to dSPIN */
+	write_byte(dSPIN_MOVE | pan_dir, dSPIN_MOVE | tilt_dir);
+	/* Send n_step - byte 2 data dSPIN */
+	write_byte((uint8_t)(pan_steps >> 16), (uint8_t)(tilt_steps >> 16));
+	/* Send n_step - byte 1 data dSPIN */
+	write_byte((uint8_t)(pan_steps >> 8), (uint8_t)(tilt_steps >> 8));
+	/* Send n_step - byte 0 data dSPIN */
+	write_byte((uint8_t)(pan_steps), (uint8_t)(tilt_steps));
+}
+
+void pan_move(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_steps)
+{
+	/* Send Move operation code to dSPIN */
+	write_byte(dSPIN_MOVE | pan_dir, dSPIN_NOP);
+	/* Send n_step - byte 2 data dSPIN */
+	write_byte((uint8_t)(pan_steps >> 16), dSPIN_NOP);
+	/* Send n_step - byte 1 data dSPIN */
+	write_byte((uint8_t)(pan_steps >> 8), dSPIN_NOP);
+	/* Send n_step - byte 0 data dSPIN */
+	write_byte((uint8_t)(pan_steps), dSPIN_NOP);
+}
+
+void tilt_move(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_steps)
+{
+	/* Send Move operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_MOVE | tilt_dir);
+	/* Send n_step - byte 2 data dSPIN */
+	write_byte(dSPIN_NOP, (uint8_t)(tilt_steps >> 16));
+	/* Send n_step - byte 1 data dSPIN */
+	write_byte(dSPIN_NOP, (uint8_t)(tilt_steps >> 8));
+	/* Send n_step - byte 0 data dSPIN */
+	write_byte(dSPIN_NOP, (uint8_t)(tilt_steps));
+}
+
 /**
   * @brief  Issues dSPIN Go To command.
   * @param  Absolute position where requested to move
