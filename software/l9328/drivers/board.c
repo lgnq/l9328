@@ -19,6 +19,10 @@
 #include "stm32f10x_fsmc.h"
 #include "board.h"
 
+#ifdef RT_USING_RTC
+#include "rtc.h"
+#endif
+
 /**
  * @addtogroup STM32
  */
@@ -67,10 +71,14 @@ void rt_hw_board_init(void)
 	NVIC_Configuration();
 
     /* Configure the SysTick */
-    SysTick_Config( SystemCoreClock / RT_TICK_PER_SECOND );
+    SysTick_Config(SystemCoreClock / RT_TICK_PER_SECOND);
 
 	rt_hw_usart_init();
 	rt_console_set_device(CONSOLE_DEVICE);
+
+#ifdef RT_USING_RTC
+	rt_hw_rtc_init();
+#endif
 }
 
 /*@}*/

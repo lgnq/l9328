@@ -17,6 +17,7 @@
 *.PRI
 *.PS
 *.WK3
+*.SearchResults
 
 .sconsign.dblite
 project.uvproj
