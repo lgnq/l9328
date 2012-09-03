@@ -425,6 +425,10 @@ uint8_t dSPIN_Write_Byte(uint8_t byte);
 
 void set_param(dSPIN_Registers_TypeDef param, uint32_t pan_value, uint32_t tilt_value);
 void registers_set(dSPIN_RegsStruct_TypeDef *pan_regs, dSPIN_RegsStruct_TypeDef *tilt_regs);
+void move(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_steps, dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_steps);
+void pan_move(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_steps);
+void tilt_move(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_steps);
+
 
 uint16_t write_byte(uint8_t pan_byte, uint8_t tilt_byte);
 
