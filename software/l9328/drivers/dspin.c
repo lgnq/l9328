@@ -323,6 +323,42 @@ void dSPIN_Run(dSPIN_Direction_TypeDef direction, uint32_t speed)
 	dSPIN_Write_Byte((uint8_t)(speed));
 }
 
+void run(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_speed, dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_speed)
+{
+	/* Send RUN operation code to dSPIN */
+	write_byte(dSPIN_RUN | pan_dir, dSPIN_RUN | tilt_dir);
+	/* Send speed - byte 2 data dSPIN */
+	write_byte((uint8_t)(pan_speed >> 16), (uint8_t)(tilt_speed >> 16));
+	/* Send speed - byte 1 data dSPIN */
+	write_byte((uint8_t)(pan_speed >> 8), (uint8_t)(tilt_speed >> 8));
+	/* Send speed - byte 0 data dSPIN */
+	write_byte((uint8_t)(pan_speed), (uint8_t)(tilt_speed));
+}
+
+void pan_run(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_speed)
+{
+	/* Send RUN operation code to dSPIN */
+	write_byte(dSPIN_RUN | pan_dir, dSPIN_NOP);
+	/* Send speed - byte 2 data dSPIN */
+	write_byte((uint8_t)(pan_speed >> 16), dSPIN_NOP);
+	/* Send speed - byte 1 data dSPIN */
+	write_byte((uint8_t)(pan_speed >> 8), dSPIN_NOP);
+	/* Send speed - byte 0 data dSPIN */
+	write_byte((uint8_t)(pan_speed), dSPIN_NOP);
+}
+
+void tilt_run(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_speed)
+{
+	/* Send RUN operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_RUN | tilt_dir);
+	/* Send speed - byte 2 data dSPIN */
+	write_byte(dSPIN_NOP, (uint8_t)(tilt_speed >> 16));
+	/* Send speed - byte 1 data dSPIN */
+	write_byte(dSPIN_NOP, (uint8_t)(tilt_speed >> 8));
+	/* Send speed - byte 0 data dSPIN */
+	write_byte(dSPIN_NOP, (uint8_t)(tilt_speed));
+}
+
 /**
   * @brief  Issues dSPIN Step Clock command.
   * @param  Movement direction (FWD, REV)
