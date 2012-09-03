@@ -2,8 +2,9 @@
   ******************************************************************************
   * @file    dspin.h 
   * @author  IMMCC Prague FA - MH
-  * @version V1.0.0
-  * @date    27-May-2011
+  * @modify  lgnq
+  * @version V1.0.1
+  * @date    3-Sep-2012
   * @brief   Header for dspin.c module
   ******************************************************************************
   * @copy
@@ -18,11 +19,9 @@
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   */ 
 
-/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __DSPIN_H__
 #define __DSPIN_H__
 
-/* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
 
 /* Exported constants --------------------------------------------------------*/
@@ -434,6 +433,6 @@ void tilt_run(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_speed);
 
 uint16_t write_byte(uint8_t pan_byte, uint8_t tilt_byte);
 
-#endif /* __DSPIN_H */
+#endif /* __DSPIN_H__ */
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

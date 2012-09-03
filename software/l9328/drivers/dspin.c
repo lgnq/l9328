@@ -2,8 +2,9 @@
   ******************************************************************************
   * @file    dspin.c 
   * @author  IMMCC Prague FA - MH
-  * @version V1.0.0
-  * @date    27-May-2011
+  * @modify  lgnq
+  * @version V1.0.1
+  * @date    3-Sep-2012
   * @brief   dSPIN (L6470) product related routines
   ******************************************************************************
   * @copy
@@ -18,7 +19,6 @@
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   */ 
 
-/* Includes ------------------------------------------------------------------*/
 #include "dspin.h"
 #include "stm32f10x_spi.h"
 
