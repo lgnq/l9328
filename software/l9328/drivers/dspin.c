@@ -628,6 +628,24 @@ void dSPIN_Go_Home(void)
 	dSPIN_Write_Byte(dSPIN_GO_HOME);
 }
 
+void go_home(void)
+{
+	/* Send GoHome operation code to dSPIN */
+	write_byte(dSPIN_GO_HOME, dSPIN_GO_HOME);
+}
+
+void pan_go_home(void)
+{
+	/* Send GoHome operation code to dSPIN */
+	write_byte(dSPIN_GO_HOME, dSPIN_NOP);
+}
+
+void tilt_go_home(void)
+{
+	/* Send GoHome operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_GO_HOME);
+}
+
 /**
   * @brief  Issues dSPIN Go Mark command.
   * @param  None

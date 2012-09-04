@@ -452,6 +452,9 @@ void tilt_go_until(dSPIN_Action_TypeDef tilt_action, dSPIN_Direction_TypeDef til
 void release_sw(dSPIN_Action_TypeDef pan_action, dSPIN_Direction_TypeDef pan_dir, dSPIN_Action_TypeDef tilt_action, dSPIN_Direction_TypeDef tilt_dir);
 void pan_release_sw(dSPIN_Action_TypeDef pan_action, dSPIN_Direction_TypeDef pan_dir);
 void tilt_release_sw(dSPIN_Action_TypeDef tilt_action, dSPIN_Direction_TypeDef tilt_dir);
+void go_home(void);
+void pan_go_home(void);
+void tilt_go_home(void);
 
 #ifdef RT_USING_FINSH
 #include <finsh.h>
@@ -473,6 +476,9 @@ FINSH_FUNCTION_EXPORT(tilt_go_until, The GoUntil command produces a motion at SP
 FINSH_FUNCTION_EXPORT(release_sw, The ReleaseSW command produces a motion at minimum speed imposing a forware or a reverse rotation)
 FINSH_FUNCTION_EXPORT(pan_release_sw, The ReleaseSW command produces a motion at minimum speed imposing a forware or a reverse rotation)
 FINSH_FUNCTION_EXPORT(tilt_release_sw, The ReleaseSW command produces a motion at minimum speed imposing a forware or a reverse rotation)
+FINSH_FUNCTION_EXPORT(go_home, The GoHome command produces a motion to the HOME position-zero position via the shortest path)
+FINSH_FUNCTION_EXPORT(pan_go_home, The GoHome command produces a motion to the HOME position-zero position via the shortest path)
+FINSH_FUNCTION_EXPORT(tilt_go_home, The GoHome command produces a motion to the HOME position-zero position via the shortest path)
 #endif
 
 uint16_t write_byte(uint8_t pan_byte, uint8_t tilt_byte);
