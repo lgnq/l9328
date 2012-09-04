@@ -493,6 +493,42 @@ void dSPIN_Go_To_Dir(dSPIN_Direction_TypeDef direction, uint32_t abs_pos)
 	dSPIN_Write_Byte((uint8_t)(abs_pos));
 }
 
+void go_to_dir(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_abs_pos, dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_abs_pos)
+{
+	/* Send GoTo_DIR operation code to dSPIN */
+	write_byte(dSPIN_GO_TO_DIR | pan_dir, dSPIN_GO_TO_DIR | tilt_dir);
+	/* Send absolute position parameter - byte 2 data to dSPIN */
+	write_byte((uint8_t)(pan_abs_pos >> 16), (uint8_t)(tilt_abs_pos >> 16));
+	/* Send absolute position parameter - byte 1 data to dSPIN */
+	write_byte((uint8_t)(pan_abs_pos >> 8), (uint8_t)(tilt_abs_pos >> 8));
+	/* Send absolute position parameter - byte 0 data to dSPIN */
+	write_byte((uint8_t)(pan_abs_pos), (uint8_t)(tilt_abs_pos));
+}
+
+void pan_go_to_dir(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_abs_pos)
+{
+	/* Send GoTo_DIR operation code to dSPIN */
+	write_byte(dSPIN_GO_TO_DIR | pan_dir, dSPIN_NOP);
+	/* Send absolute position parameter - byte 2 data to dSPIN */
+	write_byte((uint8_t)(pan_abs_pos >> 16), dSPIN_NOP);
+	/* Send absolute position parameter - byte 1 data to dSPIN */
+	write_byte((uint8_t)(pan_abs_pos >> 8), dSPIN_NOP);
+	/* Send absolute position parameter - byte 0 data to dSPIN */
+	write_byte((uint8_t)(pan_abs_pos), dSPIN_NOP);
+}
+
+void tilt_go_to_dir(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_abs_pos)
+{
+	/* Send GoTo_DIR operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_GO_TO_DIR | tilt_dir);
+	/* Send absolute position parameter - byte 2 data to dSPIN */
+	write_byte(dSPIN_NOP, (uint8_t)(tilt_abs_pos >> 16));
+	/* Send absolute position parameter - byte 1 data to dSPIN */
+	write_byte(dSPIN_NOP, (uint8_t)(tilt_abs_pos >> 8));
+	/* Send absolute position parameter - byte 0 data to dSPIN */
+	write_byte(dSPIN_NOP, (uint8_t)(tilt_abs_pos));
+}
+
 /**
   * @brief  Issues dSPIN Go Until command.
   * @param  Action, Movement direction, Speed
