@@ -657,6 +657,24 @@ void dSPIN_Go_Mark(void)
 	dSPIN_Write_Byte(dSPIN_GO_MARK);
 }
 
+void go_mark(void)
+{
+	/* Send GoMark operation code to dSPIN */
+	write_byte(dSPIN_GO_MARK, dSPIN_GO_MARK);
+}
+
+void pan_go_mark(void)
+{
+	/* Send GoMark operation code to dSPIN */
+	write_byte(dSPIN_GO_MARK, dSPIN_NOP);
+}
+
+void tilt_go_mark(void)
+{
+	/* Send GoMark operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_GO_MARK);
+}
+
 /**
   * @brief  Issues dSPIN Reset Pos command.
   * @param  None
@@ -666,6 +684,24 @@ void dSPIN_Reset_Pos(void)
 {
 	/* Send ResetPos operation code to dSPIN */
 	dSPIN_Write_Byte(dSPIN_RESET_POS);
+}
+
+void reset_pos(void)
+{
+	/* Send ResetPos operation code to dSPIN */
+	write_byte(dSPIN_RESET_POS, dSPIN_RESET_POS);
+}
+
+void pan_reset_pos(void)
+{
+	/* Send ResetPos operation code to dSPIN */
+	write_byte(dSPIN_RESET_POS, dSPIN_NOP);
+}
+
+void tilt_reset_pos(void)
+{
+	/* Send ResetPos operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_RESET_POS);
 }
 
 /**
@@ -679,6 +715,24 @@ void dSPIN_Reset_Device(void)
 	dSPIN_Write_Byte(dSPIN_RESET_DEVICE);
 }
 
+void reset_device(void)
+{
+	/* Send ResetDevice operation code to dSPIN */
+	write_byte(dSPIN_RESET_DEVICE, dSPIN_RESET_DEVICE);
+}
+
+void pan_reset_device(void)
+{
+	/* Send ResetDevice operation code to dSPIN */
+	write_byte(dSPIN_RESET_DEVICE, dSPIN_NOP);
+}
+
+void tilt_reset_device(void)
+{
+	/* Send ResetDevice operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_RESET_DEVICE);
+}
+
 /**
   * @brief  Issues dSPIN Soft Stop command.
   * @param  None
@@ -688,6 +742,24 @@ void dSPIN_Soft_Stop(void)
 {
 	/* Send SoftStop operation code to dSPIN */
 	dSPIN_Write_Byte(dSPIN_SOFT_STOP);
+}
+
+void soft_stop(void)
+{
+	/* Send SoftStop operation code to dSPIN */
+	write_byte(dSPIN_SOFT_STOP, dSPIN_SOFT_STOP);
+}
+
+void pan_soft_stop(void)
+{
+	/* Send SoftStop operation code to dSPIN */
+	write_byte(dSPIN_SOFT_STOP, dSPIN_NOP);
+}
+
+void tilt_soft_stop(void)
+{
+	/* Send SoftStop operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_SOFT_STOP);
 }
 
 /**
@@ -701,6 +773,25 @@ void dSPIN_Hard_Stop(void)
 	dSPIN_Write_Byte(dSPIN_HARD_STOP);
 }
 
+void hard_stop(void)
+{
+	/* Send HardStop operation code to dSPIN */
+	write_byte(dSPIN_HARD_STOP, dSPIN_HARD_STOP);
+}
+
+void pan_hard_stop(void)
+{
+	/* Send HardStop operation code to dSPIN */
+	write_byte(dSPIN_HARD_STOP, dSPIN_NOP);
+}
+
+void tilt_hard_stop(void)
+{
+	/* Send HardStop operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_HARD_STOP);
+}
+
+
 /**
   * @brief  Issues dSPIN Soft HiZ command.
   * @param  None
@@ -712,6 +803,24 @@ void dSPIN_Soft_HiZ(void)
 	dSPIN_Write_Byte(dSPIN_SOFT_HIZ);
 }
 
+void soft_hiz(void)
+{
+	/* Send SoftHiZ operation code to dSPIN */
+	write_byte(dSPIN_SOFT_HIZ, dSPIN_SOFT_HIZ);
+}
+
+void pan_soft_hiz(void)
+{
+	/* Send SoftHiZ operation code to dSPIN */
+	write_byte(dSPIN_SOFT_HIZ, dSPIN_NOP);
+}
+
+void tilt_soft_hiz(void)
+{
+	/* Send SoftHiZ operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_SOFT_HIZ);
+}
+
 /**
   * @brief  Issues dSPIN Hard HiZ command.
   * @param  None
@@ -721,6 +830,24 @@ void dSPIN_Hard_HiZ(void)
 {
 	/* Send HardHiZ operation code to dSPIN */
 	dSPIN_Write_Byte(dSPIN_HARD_HIZ);
+}
+
+void hard_hiz(void)
+{
+	/* Send HardHiZ operation code to dSPIN */
+	write_byte(dSPIN_HARD_HIZ, dSPIN_HARD_HIZ);
+}
+
+void pan_hard_hiz(void)
+{
+	/* Send HardHiZ operation code to dSPIN */
+	write_byte(dSPIN_HARD_HIZ, dSPIN_NOP);
+}
+
+void tilt_hard_hiz(void)
+{
+	/* Send HardHiZ operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_HARD_HIZ);
 }
 
 /**

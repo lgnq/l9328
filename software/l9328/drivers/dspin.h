@@ -455,6 +455,27 @@ void tilt_release_sw(dSPIN_Action_TypeDef tilt_action, dSPIN_Direction_TypeDef t
 void go_home(void);
 void pan_go_home(void);
 void tilt_go_home(void);
+void go_mark(void);
+void pan_go_mark(void);
+void tilt_go_mark(void);
+void reset_pos(void);
+void pan_reset_pos(void);
+void tilt_reset_pos(void);
+void reset_device(void);
+void pan_reset_device(void);
+void tilt_reset_device(void);
+void soft_stop(void);
+void pan_soft_stop(void);
+void tilt_soft_stop(void);
+void hard_stop(void);
+void pan_hard_stop(void);
+void tilt_hard_stop(void);
+void soft_hiz(void);
+void pan_soft_hiz(void);
+void tilt_soft_hiz(void);
+void hard_hiz(void);
+void pan_hard_hiz(void);
+void tilt_hard_hiz(void);
 
 #ifdef RT_USING_FINSH
 #include <finsh.h>
@@ -479,6 +500,27 @@ FINSH_FUNCTION_EXPORT(tilt_release_sw, The ReleaseSW command produces a motion a
 FINSH_FUNCTION_EXPORT(go_home, The GoHome command produces a motion to the HOME position-zero position via the shortest path)
 FINSH_FUNCTION_EXPORT(pan_go_home, The GoHome command produces a motion to the HOME position-zero position via the shortest path)
 FINSH_FUNCTION_EXPORT(tilt_go_home, The GoHome command produces a motion to the HOME position-zero position via the shortest path)
+FINSH_FUNCTION_EXPORT(go_mark, The GoMark command produces a motion to MARK position performing the minimum path)
+FINSH_FUNCTION_EXPORT(pan_go_mark, The GoMark command produces a motion to MARK position performing the minimum path)
+FINSH_FUNCTION_EXPORT(tilt_go_mark, The GoMark command produces a motion to MARK position performing the minimum path)
+FINSH_FUNCTION_EXPORT(reset_pos, The ResetPos command resets the ABS_POS register to zero. The zero position is also defined as HOME position)
+FINSH_FUNCTION_EXPORT(pan_reset_pos, The ResetPos command resets the ABS_POS register to zero. The zero position is also defined as HOME position)
+FINSH_FUNCTION_EXPORT(tilt_reset_pos, The ResetPos command resets the ABS_POS register to zero. The zero position is also defined as HOME position)
+FINSH_FUNCTION_EXPORT(reset_device, The ResetDevice command resets the device to power-up conditions)
+FINSH_FUNCTION_EXPORT(pan_reset_device, The ResetDevice command resets the device to power-up conditions)
+FINSH_FUNCTION_EXPORT(tilt_reset_device, The ResetDevice command resets the device to power-up conditions)
+FINSH_FUNCTION_EXPORT(soft_stop, The SoftStop command causes an immediate deceleration to zero speed and a consequent motor stop)
+FINSH_FUNCTION_EXPORT(pan_soft_stop, The SoftStop command causes an immediate deceleration to zero speed and a consequent motor stop)
+FINSH_FUNCTION_EXPORT(tilt_soft_stop, The SoftStop command causes an immediate deceleration to zero speed and a consequent motor stop)
+FINSH_FUNCTION_EXPORT(hard_stop, The HardStop command causes an immediate motor stop with infinite deceleration)
+FINSH_FUNCTION_EXPORT(pan_hard_stop, The HardStop command causes an immediate motor stop with infinite deceleration)
+FINSH_FUNCTION_EXPORT(tilt_hard_stop, The HardStop command causes an immediate motor stop with infinite deceleration)
+FINSH_FUNCTION_EXPORT(soft_hiz, The SoftHiZ command disables the power bridges after a deceleration to zero)
+FINSH_FUNCTION_EXPORT(pan_soft_hiz, The SoftHiZ command disables the power bridges after a deceleration to zero)
+FINSH_FUNCTION_EXPORT(tilt_soft_hiz, The SoftHiZ command disables the power bridges after a deceleration to zero)
+FINSH_FUNCTION_EXPORT(hard_hiz, The HardHiZ command immediately disables the power bridges and raises the HiZ flag)
+FINSH_FUNCTION_EXPORT(pan_hard_hiz, The HardHiZ command immediately disables the power bridges and raises the HiZ flag)
+FINSH_FUNCTION_EXPORT(tilt_hard_hiz, The HardHiZ command immediately disables the power bridges and raises the HiZ flag)
 #endif
 
 uint16_t write_byte(uint8_t pan_byte, uint8_t tilt_byte);
