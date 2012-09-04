@@ -430,6 +430,22 @@ void tilt_move(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_steps);
 void run(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_speed, dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_speed);
 void pan_run(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_speed);
 void tilt_run(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_speed);
+void go_to(uint32_t pan_abs_pos, uint32_t tilt_abs_pos);
+void pan_go_to(uint32_t pan_abs_pos);
+void tilt_go_to(uint32_t tilt_abs_pos);
+
+#ifdef RT_USING_FINSH
+#include <finsh.h>
+FINSH_FUNCTION_EXPORT(move, move pan and tilt motor at the same time)
+FINSH_FUNCTION_EXPORT(pan_move, move pan motor)
+FINSH_FUNCTION_EXPORT(tilt_move, move tilt motor)
+FINSH_FUNCTION_EXPORT(run, start pan and tilt motor at the same time)
+FINSH_FUNCTION_EXPORT(pan_run, start pan motor)
+FINSH_FUNCTION_EXPORT(tilt_run, start tilt motor)
+FINSH_FUNCTION_EXPORT(go_to, go to pan and tilt motor at the same time)
+FINSH_FUNCTION_EXPORT(pan_go_to, pan go to)
+FINSH_FUNCTION_EXPORT(tilt_go_to, tilt go to)
+#endif
 
 uint16_t write_byte(uint8_t pan_byte, uint8_t tilt_byte);
 
