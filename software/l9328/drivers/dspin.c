@@ -599,6 +599,24 @@ void dSPIN_Release_SW(dSPIN_Action_TypeDef action, dSPIN_Direction_TypeDef direc
 	dSPIN_Write_Byte(dSPIN_RELEASE_SW | action | direction);
 }
 
+void release_sw(dSPIN_Action_TypeDef pan_action, dSPIN_Direction_TypeDef pan_dir, dSPIN_Action_TypeDef tilt_action, dSPIN_Direction_TypeDef tilt_dir)
+{
+	/* Send ReleaseSW operation code to dSPIN */
+	write_byte(dSPIN_RELEASE_SW | pan_action | pan_dir, dSPIN_RELEASE_SW | tilt_action | tilt_dir);
+}
+
+void pan_release_sw(dSPIN_Action_TypeDef pan_action, dSPIN_Direction_TypeDef pan_dir)
+{
+	/* Send ReleaseSW operation code to dSPIN */
+	write_byte(dSPIN_RELEASE_SW | pan_action | pan_dir, dSPIN_NOP);
+}
+
+void tilt_release_sw(dSPIN_Action_TypeDef tilt_action, dSPIN_Direction_TypeDef tilt_dir)
+{
+	/* Send ReleaseSW operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_RELEASE_SW | tilt_action | tilt_dir);
+}
+
 /**
   * @brief  Issues dSPIN Go Home command. (Shorted path to zero position)
   * @param  None
