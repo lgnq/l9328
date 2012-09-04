@@ -546,6 +546,48 @@ void dSPIN_Go_Until(dSPIN_Action_TypeDef action, dSPIN_Direction_TypeDef directi
 	dSPIN_Write_Byte((uint8_t)(speed));
 }
 
+void go_until(
+	dSPIN_Action_TypeDef    pan_action, 
+	dSPIN_Direction_TypeDef pan_dir, 
+	uint32_t                pan_speed, 
+	dSPIN_Action_TypeDef    tilt_action, 
+	dSPIN_Direction_TypeDef tilt_dir, 
+	uint32_t                tilt_speed)
+{
+	/* Send GoUntil operation code to dSPIN */
+	write_byte(dSPIN_GO_UNTIL | pan_action | pan_dir, dSPIN_GO_UNTIL | tilt_action | tilt_dir);
+	/* Send speed parameter - byte 2 data to dSPIN */
+	write_byte((uint8_t)(pan_speed >> 16), (uint8_t)(tilt_speed >> 16));
+	/* Send speed parameter - byte 1 data to dSPIN */
+	write_byte((uint8_t)(pan_speed >> 8), (uint8_t)(tilt_speed >> 8));
+	/* Send speed parameter - byte 0 data to dSPIN */
+	write_byte((uint8_t)(pan_speed), (uint8_t)(tilt_speed));
+}
+
+void pan_go_until(dSPIN_Action_TypeDef pan_action, dSPIN_Direction_TypeDef pan_dir, uint32_t pan_speed)
+{
+	/* Send GoUntil operation code to dSPIN */
+	write_byte(dSPIN_GO_UNTIL | pan_action | pan_dir, dSPIN_NOP);
+	/* Send speed parameter - byte 2 data to dSPIN */
+	write_byte((uint8_t)(pan_speed >> 16), dSPIN_NOP);
+	/* Send speed parameter - byte 1 data to dSPIN */
+	write_byte((uint8_t)(pan_speed >> 8), dSPIN_NOP);
+	/* Send speed parameter - byte 0 data to dSPIN */
+	write_byte((uint8_t)(pan_speed), dSPIN_NOP);
+}
+
+void tilt_go_until(dSPIN_Action_TypeDef tilt_action, dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_speed)
+{
+	/* Send GoUntil operation code to dSPIN */
+	write_byte(dSPIN_NOP, dSPIN_GO_UNTIL | tilt_action | tilt_dir);
+	/* Send speed parameter - byte 2 data to dSPIN */
+	write_byte(dSPIN_NOP, (uint8_t)(tilt_speed >> 16));
+	/* Send speed parameter - byte 1 data to dSPIN */
+	write_byte(dSPIN_NOP, (uint8_t)(tilt_speed >> 8));
+	/* Send speed parameter - byte 0 data to dSPIN */
+	write_byte(dSPIN_NOP, (uint8_t)(tilt_speed));
+}
+
 /**
   * @brief  Issues dSPIN Release SW command.
   * @param  Action, Movement direction

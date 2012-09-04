@@ -433,9 +433,22 @@ void tilt_run(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_speed);
 void go_to(uint32_t pan_abs_pos, uint32_t tilt_abs_pos);
 void pan_go_to(uint32_t pan_abs_pos);
 void tilt_go_to(uint32_t tilt_abs_pos);
-void go_to_dir(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_abs_pos, dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_abs_pos);
+void go_to_dir(
+	dSPIN_Direction_TypeDef pan_dir,
+	uint32_t                pan_abs_pos,
+	dSPIN_Direction_TypeDef tilt_dir,
+	uint32_t                tilt_abs_pos);
 void pan_go_to_dir(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_abs_pos);
 void tilt_go_to_dir(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_abs_pos);
+void go_until(
+	dSPIN_Action_TypeDef    pan_action, 
+	dSPIN_Direction_TypeDef pan_dir, 
+	uint32_t                pan_speed, 
+	dSPIN_Action_TypeDef    tilt_action, 
+	dSPIN_Direction_TypeDef tilt_dir, 
+	uint32_t                tilt_speed);
+void pan_go_until(dSPIN_Action_TypeDef pan_action, dSPIN_Direction_TypeDef pan_dir, uint32_t pan_speed);
+void tilt_go_until(dSPIN_Action_TypeDef tilt_action, dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_speed);
 
 #ifdef RT_USING_FINSH
 #include <finsh.h>
@@ -451,6 +464,9 @@ FINSH_FUNCTION_EXPORT(tilt_go_to, tilt go to)
 FINSH_FUNCTION_EXPORT(go_to_dir, go to pan and tilt motor at the same time)
 FINSH_FUNCTION_EXPORT(pan_go_to_dir, pan go to in direction)
 FINSH_FUNCTION_EXPORT(tilt_go_to_dir, tilt go to in direction)
+FINSH_FUNCTION_EXPORT(go_until, The GoUntil command produces a motion at SPD speed imposing a forware or a reverse direction)
+FINSH_FUNCTION_EXPORT(pan_go_until, The GoUntil command produces a motion at SPD speed imposing a forware or a reverse direction)
+FINSH_FUNCTION_EXPORT(tilt_go_until, The GoUntil command produces a motion at SPD speed imposing a forware or a reverse direction)
 #endif
 
 uint16_t write_byte(uint8_t pan_byte, uint8_t tilt_byte);
