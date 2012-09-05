@@ -377,9 +377,61 @@ typedef enum
 	ACTION_RESET	=((uint8_t)0x00),
 	ACTION_COPY		=((uint8_t)0x01)
 } dSPIN_Action_TypeDef;
-/**
-  * @}
-  */
+
+struct status
+{
+	uint8_t hiz         : 1;
+	uint8_t busy        : 1;
+	uint8_t sw_f        : 1;
+	uint8_t sw_evn      : 1;
+	uint8_t dir         : 1;
+	uint8_t mot_status  : 2;
+	uint8_t notperf_cmd : 1;
+	uint8_t wrong_cmd   : 1;
+	uint8_t uvlo        : 1;
+	uint8_t th_wrn      : 1;
+	uint8_t th_sd       : 1;
+	uint8_t ocd         : 1;
+	uint8_t step_loss_a : 1;
+	uint8_t step_loss_b : 1;
+	uint8_t sck_mod     : 1;
+};
+
+union u
+{
+	struct
+	{
+		uint8_t hiz 		: 1;
+		uint8_t busy		: 1;
+		uint8_t sw_f		: 1;
+		uint8_t sw_evn		: 1;
+		uint8_t dir 		: 1;
+		uint8_t mot_status	: 2;
+		uint8_t notperf_cmd : 1;
+		uint8_t wrong_cmd	: 1;
+		uint8_t uvlo		: 1;
+		uint8_t th_wrn		: 1;
+		uint8_t th_sd		: 1;
+		uint8_t ocd 		: 1;
+		uint8_t step_loss_a : 1;
+		uint8_t step_loss_b : 1;
+		uint8_t sck_mod 	: 1;
+	};
+	uint16_t value;
+};
+/*
+struct motor_status
+{
+	struct status pan_status;
+	struct status tilt_status;	
+};
+*/
+
+struct motor_status
+{
+	union u pan_status;
+	union u tilt_status;	
+};
 
 /* Exported macro ------------------------------------------------------------*/
 #define Speed_Steps_to_Par(steps) ((uint32_t)(((steps)*67.108864)+0.5))			/* Speed conversion, range 0 to 15625 steps/s */
@@ -476,6 +528,7 @@ void tilt_soft_hiz(void);
 void hard_hiz(void);
 void pan_hard_hiz(void);
 void tilt_hard_hiz(void);
+struct motor_status get_status(void);
 
 #ifdef RT_USING_FINSH
 #include <finsh.h>
@@ -521,6 +574,7 @@ FINSH_FUNCTION_EXPORT(tilt_soft_hiz, The SoftHiZ command disables the power brid
 FINSH_FUNCTION_EXPORT(hard_hiz, The HardHiZ command immediately disables the power bridges and raises the HiZ flag)
 FINSH_FUNCTION_EXPORT(pan_hard_hiz, The HardHiZ command immediately disables the power bridges and raises the HiZ flag)
 FINSH_FUNCTION_EXPORT(tilt_hard_hiz, The HardHiZ command immediately disables the power bridges and raises the HiZ flag)
+FINSH_FUNCTION_EXPORT(get_status, The GetStatus command returns the Status register value)
 #endif
 
 uint16_t write_byte(uint8_t pan_byte, uint8_t tilt_byte);
