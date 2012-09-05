@@ -19,6 +19,8 @@
   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
   */ 
 
+#include <rtthread.h>
+
 #include "dspin.h"
 #include "stm32f10x_spi.h"
 
@@ -267,6 +269,60 @@ void set_param(dSPIN_Registers_TypeDef param,
     }
 }
 
+void pan_set_param(dSPIN_Registers_TypeDef param, uint32_t pan_value)
+{
+    /* Send SetParam operation code to dSPIN */
+    write_byte(dSPIN_SET_PARAM | param, dSPIN_NOP);
+    switch (param)
+    {
+        case dSPIN_ABS_POS: ;
+        case dSPIN_MARK: ;
+        case dSPIN_SPEED:
+            /* Send parameter - byte 2 to dSPIN */
+            write_byte((uint8_t)(pan_value >> 16), dSPIN_NOP);
+        case dSPIN_ACC: ;
+        case dSPIN_DEC: ;
+        case dSPIN_MAX_SPEED: ;
+        case dSPIN_MIN_SPEED: ;
+        case dSPIN_FS_SPD: ;
+        case dSPIN_INT_SPD: ;
+        case dSPIN_CONFIG: ;
+        case dSPIN_STATUS:
+            /* Send parameter - byte 1 to dSPIN */
+            write_byte((uint8_t)(pan_value >> 8), dSPIN_NOP);
+        default:
+            /* Send parameter - byte 0 to dSPIN */
+            write_byte((uint8_t)(pan_value), dSPIN_NOP);
+    }
+}
+
+void tilt_set_param(dSPIN_Registers_TypeDef param, uint32_t tilt_value)
+{
+    /* Send SetParam operation code to dSPIN */
+    write_byte(dSPIN_NOP, dSPIN_SET_PARAM | param);
+    switch (param)
+    {
+        case dSPIN_ABS_POS: ;
+        case dSPIN_MARK: ;
+        case dSPIN_SPEED:
+            /* Send parameter - byte 2 to dSPIN */
+            write_byte(dSPIN_NOP, (uint8_t)(tilt_value >> 16));
+        case dSPIN_ACC: ;
+        case dSPIN_DEC: ;
+        case dSPIN_MAX_SPEED: ;
+        case dSPIN_MIN_SPEED: ;
+        case dSPIN_FS_SPD: ;
+        case dSPIN_INT_SPD: ;
+        case dSPIN_CONFIG: ;
+        case dSPIN_STATUS:
+            /* Send parameter - byte 1 to dSPIN */
+            write_byte(dSPIN_NOP, (uint8_t)(tilt_value >> 8));
+        default:
+            /* Send parameter - byte 0 to dSPIN */
+            write_byte(dSPIN_NOP, (uint8_t)(tilt_value));
+    }
+}
+
 /**
   * @brief  Issues dSPIN Get Param command.
   * @param  dSPIN register address
@@ -307,6 +363,85 @@ uint32_t dSPIN_Get_Param(dSPIN_Registers_TypeDef param)
     }
     return rx;
 }
+
+uint32_t pan_get_param(dSPIN_Registers_TypeDef param)
+{
+    uint32_t temp = 0;
+    uint32_t rx = 0;
+
+    /* Send GetParam operation code to dSPIN */
+    temp = write_byte(dSPIN_GET_PARAM | param, dSPIN_NOP);
+    /* MSB which should be 0 */
+    temp = temp << 24;
+    rx |= temp;
+    switch (param)
+    {
+        case dSPIN_ABS_POS: ;
+        case dSPIN_MARK: ;
+        case dSPIN_SPEED:
+            temp = write_byte((uint8_t)(0x00), dSPIN_NOP) & 0xff;
+            temp = temp << 16;
+            rx |= temp;
+        case dSPIN_ACC: ;
+        case dSPIN_DEC: ;
+        case dSPIN_MAX_SPEED: ;
+        case dSPIN_MIN_SPEED: ;
+        case dSPIN_FS_SPD: ;
+        case dSPIN_INT_SPD: ;
+        case dSPIN_CONFIG: ;
+        case dSPIN_STATUS:
+            temp = write_byte((uint8_t)(0x00), dSPIN_NOP) & 0xff;
+            temp = temp << 8;
+            rx |= temp;
+        default:
+            temp = write_byte((uint8_t)(0x00), dSPIN_NOP) & 0xff;
+            rx |= temp;
+    }
+
+    rt_kprintf("PARAM(%d) of PAN is 0x%x\r\n", param, rx);
+
+    return rx;
+}
+
+uint32_t tilt_get_param(dSPIN_Registers_TypeDef param)
+{
+    uint32_t temp = 0;
+    uint32_t rx = 0;
+
+    /* Send GetParam operation code to dSPIN */
+    temp = write_byte(dSPIN_NOP, dSPIN_GET_PARAM | param);
+    /* MSB which should be 0 */
+    temp = temp << 24;
+    rx |= temp;
+    switch (param)
+    {
+        case dSPIN_ABS_POS: ;
+        case dSPIN_MARK: ;
+        case dSPIN_SPEED:
+            temp = (write_byte(dSPIN_NOP, (uint8_t)(0x00)) & 0xff00) >> 8;
+            temp = temp << 16;
+            rx |= temp;
+        case dSPIN_ACC: ;
+        case dSPIN_DEC: ;
+        case dSPIN_MAX_SPEED: ;
+        case dSPIN_MIN_SPEED: ;
+        case dSPIN_FS_SPD: ;
+        case dSPIN_INT_SPD: ;
+        case dSPIN_CONFIG: ;
+        case dSPIN_STATUS:
+            temp = (write_byte(dSPIN_NOP, (uint8_t)(0x00)) & 0xff00) >> 8;
+            temp = temp << 8;
+            rx |= temp;
+        default:
+            temp = (write_byte(dSPIN_NOP, (uint8_t)(0x00)) & 0xff00) >> 8;
+            rx |= temp;
+    }
+
+    rt_kprintf("PARAM(%d) of TILT is 0x%x\r\n", param, rx);
+
+    return rx;
+}
+
 
 /**
   * @brief  Issues dSPIN Run command.
@@ -901,16 +1036,16 @@ struct motor_status get_status(void)
 
     /* Send GetStatus operation code to dSPIN */
     temp = write_byte(dSPIN_GET_STATUS, dSPIN_GET_STATUS);
-	
+    
     /* Send zero byte / receive MSByte from dSPIN */
     temp = write_byte((uint8_t)(0x00), (uint8_t)(0x00));
-	
+    
     status.pan_status.value = (temp & 0xff) << 8;
     status.tilt_status.value = temp & 0xff00;
 
-	/* Send zero byte / receive LSByte from dSPIN */
+    /* Send zero byte / receive LSByte from dSPIN */
     temp = write_byte((uint8_t)(0x00), (uint8_t)(0x00));
-	
+    
     status.pan_status.value |= (temp & 0xff);
     status.tilt_status.value |= (temp & 0xff00) >> 8;
 
@@ -1024,25 +1159,76 @@ uint16_t write_byte(uint8_t pan_byte, uint8_t tilt_byte)
 
 void send_bytes(uint8_t size, uint8_t *in, uint8_t *out)
 {
-	uint8_t i = 0;
-	
+    uint8_t i = 0;
+    
     /* nSS signal activation - low */
     GPIO_ResetBits(dSPIN_nSS_Port, dSPIN_nSS_Pin);
 
-	for (i = 0; i < size; i++)
-	{
-	    /* SPI byte send */
-	    SPI_I2S_SendData(dSPIN_SPI, in[size - 1 - i]);
-	    /* Wait for SPIx Busy flag */
-	    while (SPI_I2S_GetFlagStatus(dSPIN_SPI, SPI_I2S_FLAG_BSY) != RESET)
-	        ;
+    for (i = 0; i < size; i++)
+    {
+        /* SPI byte send */
+        SPI_I2S_SendData(dSPIN_SPI, in[size - 1 - i]);
+        /* Wait for SPIx Busy flag */
+        while (SPI_I2S_GetFlagStatus(dSPIN_SPI, SPI_I2S_FLAG_BSY) != RESET)
+            ;
 
-	    /* SPI byte read */
-	    out[size - 1 - i] = SPI_I2S_ReceiveData(dSPIN_SPI)&0xff;
-	}
+        /* SPI byte read */
+        out[size - 1 - i] = SPI_I2S_ReceiveData(dSPIN_SPI)&0xff;
+    }
 
     /* nSS signal deactivation - high */
     GPIO_SetBits(dSPIN_nSS_Port, dSPIN_nSS_Pin);
 }
+
+#ifdef RT_USING_FINSH
+#include <finsh.h>
+FINSH_FUNCTION_EXPORT(move, move pan and tilt motor at the same time)
+FINSH_FUNCTION_EXPORT(pan_move, move pan motor)
+FINSH_FUNCTION_EXPORT(tilt_move, move tilt motor)
+FINSH_FUNCTION_EXPORT(run, start pan and tilt motor at the same time)
+FINSH_FUNCTION_EXPORT(pan_run, start pan motor)
+FINSH_FUNCTION_EXPORT(tilt_run, start tilt motor)
+FINSH_FUNCTION_EXPORT(go_to, go to pan and tilt motor at the same time)
+FINSH_FUNCTION_EXPORT(pan_go_to, pan go to)
+FINSH_FUNCTION_EXPORT(tilt_go_to, tilt go to)
+FINSH_FUNCTION_EXPORT(go_to_dir, go to pan and tilt motor at the same time)
+FINSH_FUNCTION_EXPORT(pan_go_to_dir, pan go to in direction)
+FINSH_FUNCTION_EXPORT(tilt_go_to_dir, tilt go to in direction)
+FINSH_FUNCTION_EXPORT(go_until, The GoUntil command produces a motion at SPD speed imposing a forware or a reverse direction)
+FINSH_FUNCTION_EXPORT(pan_go_until, The GoUntil command produces a motion at SPD speed imposing a forware or a reverse direction)
+FINSH_FUNCTION_EXPORT(tilt_go_until, The GoUntil command produces a motion at SPD speed imposing a forware or a reverse direction)
+FINSH_FUNCTION_EXPORT(release_sw, The ReleaseSW command produces a motion at minimum speed imposing a forware or a reverse rotation)
+FINSH_FUNCTION_EXPORT(pan_release_sw, The ReleaseSW command produces a motion at minimum speed imposing a forware or a reverse rotation)
+FINSH_FUNCTION_EXPORT(tilt_release_sw, The ReleaseSW command produces a motion at minimum speed imposing a forware or a reverse rotation)
+FINSH_FUNCTION_EXPORT(go_home, The GoHome command produces a motion to the HOME position-zero position via the shortest path)
+FINSH_FUNCTION_EXPORT(pan_go_home, The GoHome command produces a motion to the HOME position-zero position via the shortest path)
+FINSH_FUNCTION_EXPORT(tilt_go_home, The GoHome command produces a motion to the HOME position-zero position via the shortest path)
+FINSH_FUNCTION_EXPORT(go_mark, The GoMark command produces a motion to MARK position performing the minimum path)
+FINSH_FUNCTION_EXPORT(pan_go_mark, The GoMark command produces a motion to MARK position performing the minimum path)
+FINSH_FUNCTION_EXPORT(tilt_go_mark, The GoMark command produces a motion to MARK position performing the minimum path)
+FINSH_FUNCTION_EXPORT(reset_pos, The ResetPos command resets the ABS_POS register to zero. The zero position is also defined as HOME position)
+FINSH_FUNCTION_EXPORT(pan_reset_pos, The ResetPos command resets the ABS_POS register to zero. The zero position is also defined as HOME position)
+FINSH_FUNCTION_EXPORT(tilt_reset_pos, The ResetPos command resets the ABS_POS register to zero. The zero position is also defined as HOME position)
+FINSH_FUNCTION_EXPORT(reset_device, The ResetDevice command resets the device to power-up conditions)
+FINSH_FUNCTION_EXPORT(pan_reset_device, The ResetDevice command resets the device to power-up conditions)
+FINSH_FUNCTION_EXPORT(tilt_reset_device, The ResetDevice command resets the device to power-up conditions)
+FINSH_FUNCTION_EXPORT(soft_stop, The SoftStop command causes an immediate deceleration to zero speed and a consequent motor stop)
+FINSH_FUNCTION_EXPORT(pan_soft_stop, The SoftStop command causes an immediate deceleration to zero speed and a consequent motor stop)
+FINSH_FUNCTION_EXPORT(tilt_soft_stop, The SoftStop command causes an immediate deceleration to zero speed and a consequent motor stop)
+FINSH_FUNCTION_EXPORT(hard_stop, The HardStop command causes an immediate motor stop with infinite deceleration)
+FINSH_FUNCTION_EXPORT(pan_hard_stop, The HardStop command causes an immediate motor stop with infinite deceleration)
+FINSH_FUNCTION_EXPORT(tilt_hard_stop, The HardStop command causes an immediate motor stop with infinite deceleration)
+FINSH_FUNCTION_EXPORT(soft_hiz, The SoftHiZ command disables the power bridges after a deceleration to zero)
+FINSH_FUNCTION_EXPORT(pan_soft_hiz, The SoftHiZ command disables the power bridges after a deceleration to zero)
+FINSH_FUNCTION_EXPORT(tilt_soft_hiz, The SoftHiZ command disables the power bridges after a deceleration to zero)
+FINSH_FUNCTION_EXPORT(hard_hiz, The HardHiZ command immediately disables the power bridges and raises the HiZ flag)
+FINSH_FUNCTION_EXPORT(pan_hard_hiz, The HardHiZ command immediately disables the power bridges and raises the HiZ flag)
+FINSH_FUNCTION_EXPORT(tilt_hard_hiz, The HardHiZ command immediately disables the power bridges and raises the HiZ flag)
+FINSH_FUNCTION_EXPORT(get_status, The GetStatus command returns the Status register value)
+FINSH_FUNCTION_EXPORT(pan_get_param, This command reads the PARAM register value)
+FINSH_FUNCTION_EXPORT(tilt_get_param, This command reads the PARAM register value)
+FINSH_FUNCTION_EXPORT(pan_set_param, The SetParam command sets the PARAM register value equal to VALUE)
+FINSH_FUNCTION_EXPORT(tilt_set_param, The SetParam command sets the PARAM register value equal to VALUE)
+#endif
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

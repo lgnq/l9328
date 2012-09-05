@@ -474,36 +474,56 @@ uint8_t dSPIN_Flag(void);
 
 uint8_t dSPIN_Write_Byte(uint8_t byte);
 
-void set_param(dSPIN_Registers_TypeDef param, uint32_t pan_value, uint32_t tilt_value);
-void registers_set(dSPIN_RegsStruct_TypeDef *pan_regs, dSPIN_RegsStruct_TypeDef *tilt_regs);
-void move(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_steps, dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_steps);
+void set_param(dSPIN_Registers_TypeDef param,
+               uint32_t                pan_value,
+               uint32_t                tilt_value);
+void pan_set_param(dSPIN_Registers_TypeDef param, uint32_t pan_value);
+void tilt_set_param(dSPIN_Registers_TypeDef param, uint32_t tilt_value);
+uint32_t pan_get_param(dSPIN_Registers_TypeDef param);
+uint32_t tilt_get_param(dSPIN_Registers_TypeDef param);
+void registers_set(dSPIN_RegsStruct_TypeDef *pan_regs,
+                   dSPIN_RegsStruct_TypeDef *tilt_regs);
+void move(dSPIN_Direction_TypeDef pan_dir,
+          uint32_t                pan_steps,
+          dSPIN_Direction_TypeDef tilt_dir,
+          uint32_t                tilt_steps);
 void pan_move(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_steps);
 void tilt_move(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_steps);
-void run(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_speed, dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_speed);
+void run(dSPIN_Direction_TypeDef pan_dir,
+         uint32_t                pan_speed,
+         dSPIN_Direction_TypeDef tilt_dir,
+         uint32_t                tilt_speed);
 void pan_run(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_speed);
 void tilt_run(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_speed);
 void go_to(uint32_t pan_abs_pos, uint32_t tilt_abs_pos);
 void pan_go_to(uint32_t pan_abs_pos);
 void tilt_go_to(uint32_t tilt_abs_pos);
-void go_to_dir(
-	dSPIN_Direction_TypeDef pan_dir,
-	uint32_t                pan_abs_pos,
-	dSPIN_Direction_TypeDef tilt_dir,
-	uint32_t                tilt_abs_pos);
+void go_to_dir(dSPIN_Direction_TypeDef pan_dir,
+               uint32_t                pan_abs_pos,
+               dSPIN_Direction_TypeDef tilt_dir,
+               uint32_t                tilt_abs_pos);
 void pan_go_to_dir(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_abs_pos);
 void tilt_go_to_dir(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_abs_pos);
-void go_until(
-	dSPIN_Action_TypeDef    pan_action, 
-	dSPIN_Direction_TypeDef pan_dir, 
-	uint32_t                pan_speed, 
-	dSPIN_Action_TypeDef    tilt_action, 
-	dSPIN_Direction_TypeDef tilt_dir, 
-	uint32_t                tilt_speed);
-void pan_go_until(dSPIN_Action_TypeDef pan_action, dSPIN_Direction_TypeDef pan_dir, uint32_t pan_speed);
-void tilt_go_until(dSPIN_Action_TypeDef tilt_action, dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_speed);
-void release_sw(dSPIN_Action_TypeDef pan_action, dSPIN_Direction_TypeDef pan_dir, dSPIN_Action_TypeDef tilt_action, dSPIN_Direction_TypeDef tilt_dir);
-void pan_release_sw(dSPIN_Action_TypeDef pan_action, dSPIN_Direction_TypeDef pan_dir);
-void tilt_release_sw(dSPIN_Action_TypeDef tilt_action, dSPIN_Direction_TypeDef tilt_dir);
+void go_until(dSPIN_Action_TypeDef    pan_action, 
+              dSPIN_Direction_TypeDef pan_dir, 
+              uint32_t                pan_speed, 
+              dSPIN_Action_TypeDef    tilt_action, 
+              dSPIN_Direction_TypeDef tilt_dir, 
+              uint32_t                tilt_speed);
+void pan_go_until(dSPIN_Action_TypeDef    pan_action,
+                  dSPIN_Direction_TypeDef pan_dir,
+                  uint32_t                pan_speed);
+void tilt_go_until(dSPIN_Action_TypeDef    tilt_action,
+                   dSPIN_Direction_TypeDef tilt_dir,
+                   uint32_t                tilt_speed);
+void release_sw(dSPIN_Action_TypeDef    pan_action,
+                dSPIN_Direction_TypeDef pan_dir,
+                dSPIN_Action_TypeDef    tilt_action,
+                dSPIN_Direction_TypeDef tilt_dir);
+void pan_release_sw(dSPIN_Action_TypeDef    pan_action,
+                    dSPIN_Direction_TypeDef pan_dir);
+void tilt_release_sw(dSPIN_Action_TypeDef    tilt_action,
+                     dSPIN_Direction_TypeDef tilt_dir);
 void go_home(void);
 void pan_go_home(void);
 void tilt_go_home(void);
@@ -529,53 +549,6 @@ void hard_hiz(void);
 void pan_hard_hiz(void);
 void tilt_hard_hiz(void);
 struct motor_status get_status(void);
-
-#ifdef RT_USING_FINSH
-#include <finsh.h>
-FINSH_FUNCTION_EXPORT(move, move pan and tilt motor at the same time)
-FINSH_FUNCTION_EXPORT(pan_move, move pan motor)
-FINSH_FUNCTION_EXPORT(tilt_move, move tilt motor)
-FINSH_FUNCTION_EXPORT(run, start pan and tilt motor at the same time)
-FINSH_FUNCTION_EXPORT(pan_run, start pan motor)
-FINSH_FUNCTION_EXPORT(tilt_run, start tilt motor)
-FINSH_FUNCTION_EXPORT(go_to, go to pan and tilt motor at the same time)
-FINSH_FUNCTION_EXPORT(pan_go_to, pan go to)
-FINSH_FUNCTION_EXPORT(tilt_go_to, tilt go to)
-FINSH_FUNCTION_EXPORT(go_to_dir, go to pan and tilt motor at the same time)
-FINSH_FUNCTION_EXPORT(pan_go_to_dir, pan go to in direction)
-FINSH_FUNCTION_EXPORT(tilt_go_to_dir, tilt go to in direction)
-FINSH_FUNCTION_EXPORT(go_until, The GoUntil command produces a motion at SPD speed imposing a forware or a reverse direction)
-FINSH_FUNCTION_EXPORT(pan_go_until, The GoUntil command produces a motion at SPD speed imposing a forware or a reverse direction)
-FINSH_FUNCTION_EXPORT(tilt_go_until, The GoUntil command produces a motion at SPD speed imposing a forware or a reverse direction)
-FINSH_FUNCTION_EXPORT(release_sw, The ReleaseSW command produces a motion at minimum speed imposing a forware or a reverse rotation)
-FINSH_FUNCTION_EXPORT(pan_release_sw, The ReleaseSW command produces a motion at minimum speed imposing a forware or a reverse rotation)
-FINSH_FUNCTION_EXPORT(tilt_release_sw, The ReleaseSW command produces a motion at minimum speed imposing a forware or a reverse rotation)
-FINSH_FUNCTION_EXPORT(go_home, The GoHome command produces a motion to the HOME position-zero position via the shortest path)
-FINSH_FUNCTION_EXPORT(pan_go_home, The GoHome command produces a motion to the HOME position-zero position via the shortest path)
-FINSH_FUNCTION_EXPORT(tilt_go_home, The GoHome command produces a motion to the HOME position-zero position via the shortest path)
-FINSH_FUNCTION_EXPORT(go_mark, The GoMark command produces a motion to MARK position performing the minimum path)
-FINSH_FUNCTION_EXPORT(pan_go_mark, The GoMark command produces a motion to MARK position performing the minimum path)
-FINSH_FUNCTION_EXPORT(tilt_go_mark, The GoMark command produces a motion to MARK position performing the minimum path)
-FINSH_FUNCTION_EXPORT(reset_pos, The ResetPos command resets the ABS_POS register to zero. The zero position is also defined as HOME position)
-FINSH_FUNCTION_EXPORT(pan_reset_pos, The ResetPos command resets the ABS_POS register to zero. The zero position is also defined as HOME position)
-FINSH_FUNCTION_EXPORT(tilt_reset_pos, The ResetPos command resets the ABS_POS register to zero. The zero position is also defined as HOME position)
-FINSH_FUNCTION_EXPORT(reset_device, The ResetDevice command resets the device to power-up conditions)
-FINSH_FUNCTION_EXPORT(pan_reset_device, The ResetDevice command resets the device to power-up conditions)
-FINSH_FUNCTION_EXPORT(tilt_reset_device, The ResetDevice command resets the device to power-up conditions)
-FINSH_FUNCTION_EXPORT(soft_stop, The SoftStop command causes an immediate deceleration to zero speed and a consequent motor stop)
-FINSH_FUNCTION_EXPORT(pan_soft_stop, The SoftStop command causes an immediate deceleration to zero speed and a consequent motor stop)
-FINSH_FUNCTION_EXPORT(tilt_soft_stop, The SoftStop command causes an immediate deceleration to zero speed and a consequent motor stop)
-FINSH_FUNCTION_EXPORT(hard_stop, The HardStop command causes an immediate motor stop with infinite deceleration)
-FINSH_FUNCTION_EXPORT(pan_hard_stop, The HardStop command causes an immediate motor stop with infinite deceleration)
-FINSH_FUNCTION_EXPORT(tilt_hard_stop, The HardStop command causes an immediate motor stop with infinite deceleration)
-FINSH_FUNCTION_EXPORT(soft_hiz, The SoftHiZ command disables the power bridges after a deceleration to zero)
-FINSH_FUNCTION_EXPORT(pan_soft_hiz, The SoftHiZ command disables the power bridges after a deceleration to zero)
-FINSH_FUNCTION_EXPORT(tilt_soft_hiz, The SoftHiZ command disables the power bridges after a deceleration to zero)
-FINSH_FUNCTION_EXPORT(hard_hiz, The HardHiZ command immediately disables the power bridges and raises the HiZ flag)
-FINSH_FUNCTION_EXPORT(pan_hard_hiz, The HardHiZ command immediately disables the power bridges and raises the HiZ flag)
-FINSH_FUNCTION_EXPORT(tilt_hard_hiz, The HardHiZ command immediately disables the power bridges and raises the HiZ flag)
-FINSH_FUNCTION_EXPORT(get_status, The GetStatus command returns the Status register value)
-#endif
 
 uint16_t write_byte(uint8_t pan_byte, uint8_t tilt_byte);
 
