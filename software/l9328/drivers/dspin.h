@@ -24,7 +24,7 @@
 
 #include "stm32f10x.h"
 
-/* Exported constants --------------------------------------------------------*/
+/* Exported constants */
 
 #define dSPIN_SPI			SPI2
 	
@@ -94,7 +94,7 @@
 #define dSPIN_MIN_SPEED_MASK	((uint16_t)0x0FFF)
 
 
-/* Exported types ------------------------------------------------------------*/
+/* Exported types */
 
 /** 
   * @brief dSPIN Init structure definition
@@ -378,26 +378,7 @@ typedef enum
 	ACTION_COPY		=((uint8_t)0x01)
 } dSPIN_Action_TypeDef;
 
-struct status
-{
-	uint8_t hiz         : 1;
-	uint8_t busy        : 1;
-	uint8_t sw_f        : 1;
-	uint8_t sw_evn      : 1;
-	uint8_t dir         : 1;
-	uint8_t mot_status  : 2;
-	uint8_t notperf_cmd : 1;
-	uint8_t wrong_cmd   : 1;
-	uint8_t uvlo        : 1;
-	uint8_t th_wrn      : 1;
-	uint8_t th_sd       : 1;
-	uint8_t ocd         : 1;
-	uint8_t step_loss_a : 1;
-	uint8_t step_loss_b : 1;
-	uint8_t sck_mod     : 1;
-};
-
-union u
+union status
 {
 	struct
 	{
@@ -419,21 +400,14 @@ union u
 	};
 	uint16_t value;
 };
-/*
-struct motor_status
-{
-	struct status pan_status;
-	struct status tilt_status;	
-};
-*/
 
 struct motor_status
 {
-	union u pan_status;
-	union u tilt_status;	
+	union status pan_status;
+	union status tilt_status;	
 };
 
-/* Exported macro ------------------------------------------------------------*/
+/* Exported macro */
 #define Speed_Steps_to_Par(steps) ((uint32_t)(((steps)*67.108864)+0.5))			/* Speed conversion, range 0 to 15625 steps/s */
 #define AccDec_Steps_to_Par(steps) ((uint16_t)(((steps)*0.068719476736)+0.5))	/* Acc/Dec rates conversion, range 14.55 to 59590 steps/s2 */
 #define MaxSpd_Steps_to_Par(steps) ((uint16_t)(((steps)*0.065536)+0.5))			/* Max Speed conversion, range 15.25 to 15610 steps/s */
@@ -445,7 +419,7 @@ struct motor_status
 #define KTherm_to_Par(KTherm) ((uint8_t)(((KTherm - 1)/0.03125)+0.5))			/* K_THERM compensation conversion, range 1 to 1.46875 */
 #define StallTh_to_Par(StallTh) ((uint8_t)(((StallTh - 31.25)/31.25)+0.5))		/* Stall Threshold conversion, range 31.25mA to 4000mA */
 
-/* Exported functions ------------------------------------------------------- */
+/* Exported functions */
 void dSPIN_Peripherals_Init(void);
 void dSPIN_Regs_Struct_Reset(dSPIN_RegsStruct_TypeDef* dSPIN_RegsStruct);
 void dSPIN_Registers_Set(dSPIN_RegsStruct_TypeDef* dSPIN_RegsStruct);

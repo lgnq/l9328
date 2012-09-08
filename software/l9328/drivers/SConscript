@@ -26,7 +26,7 @@ if GetDepend('RT_USING_I2C') == True:
 
 # add RTC driver.
 if GetDepend('RT_USING_RTC') == True:
-	src+= ['rtc.c']
+	src+= ['drv_rtc.c']
 
 CPPPATH = [cwd]
 

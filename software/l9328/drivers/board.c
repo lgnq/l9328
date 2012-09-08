@@ -20,7 +20,7 @@
 #include "board.h"
 
 #ifdef RT_USING_RTC
-#include "rtc.h"
+#include "drv_rtc.h"
 #endif
 
 /**
