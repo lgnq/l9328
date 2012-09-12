@@ -69,6 +69,8 @@
 #define RT_CONSOLE_DEVICE_NAME	"uart1"
 
 #define RT_USING_RTC
+
+#define RT_USING_SPI
 // </section>
 
 // <section name="RT_USING_COMPONENTS_INIT" description="Using components init" default="true" >

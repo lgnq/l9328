@@ -25,10 +25,11 @@ static void rt_serial_enable_dma(DMA_Channel_TypeDef* dma_channel,
 /**
  * @addtogroup STM32
  */
+ 
 /*@{*/
 
 /* RT-Thread Device Interface */
-static rt_err_t rt_serial_init (rt_device_t dev)
+static rt_err_t rt_serial_init(rt_device_t dev)
 {
 	struct stm32_serial_device* uart = (struct stm32_serial_device*) dev->user_data;
 

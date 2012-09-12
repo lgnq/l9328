@@ -255,7 +255,7 @@ static void DMA_Configuration(void)
  * Init all related hardware in here
  * rt_hw_serial_init() will register all supported USART device
  */
-void rt_hw_usart_init()
+void rt_hw_usart_init(void)
 {
 	USART_InitTypeDef USART_InitStructure;
 	USART_ClockInitTypeDef USART_ClockInitStructure;
@@ -337,7 +337,7 @@ void rt_hw_usart_init()
 		&uart3);
 
 	/* Enable USART3 DMA Tx request */
-	USART_DMACmd(USART3, USART_DMAReq_Tx , ENABLE);
+	USART_DMACmd(USART3, USART_DMAReq_Tx, ENABLE);
 
 	/* enable interrupt */
 	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);

@@ -448,21 +448,8 @@ uint8_t dSPIN_Flag(void);
 
 uint8_t dSPIN_Write_Byte(uint8_t byte);
 
-void set_param(dSPIN_Registers_TypeDef param,
-               uint32_t                pan_value,
-               uint32_t                tilt_value);
-void pan_set_param(dSPIN_Registers_TypeDef param, uint32_t pan_value);
-void tilt_set_param(dSPIN_Registers_TypeDef param, uint32_t tilt_value);
-uint32_t pan_get_param(dSPIN_Registers_TypeDef param);
-uint32_t tilt_get_param(dSPIN_Registers_TypeDef param);
 void registers_set(dSPIN_RegsStruct_TypeDef *pan_regs,
                    dSPIN_RegsStruct_TypeDef *tilt_regs);
-void move(dSPIN_Direction_TypeDef pan_dir,
-          uint32_t                pan_steps,
-          dSPIN_Direction_TypeDef tilt_dir,
-          uint32_t                tilt_steps);
-void pan_move(dSPIN_Direction_TypeDef pan_dir, uint32_t pan_steps);
-void tilt_move(dSPIN_Direction_TypeDef tilt_dir, uint32_t tilt_steps);
 void run(dSPIN_Direction_TypeDef pan_dir,
          uint32_t                pan_speed,
          dSPIN_Direction_TypeDef tilt_dir,
@@ -522,7 +509,6 @@ void tilt_soft_hiz(void);
 void hard_hiz(void);
 void pan_hard_hiz(void);
 void tilt_hard_hiz(void);
-struct motor_status get_status(void);
 
 uint16_t write_byte(uint8_t pan_byte, uint8_t tilt_byte);
 
