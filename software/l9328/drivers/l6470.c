@@ -30,7 +30,7 @@ static void l6470_unlock(struct spi_l6470_device *dev)
 static rt_err_t l6470_init(rt_device_t dev)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
-	
+    
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 
     /* Configure dSPIN - PAN Busy pin */
@@ -72,14 +72,14 @@ static rt_err_t l6470_close(rt_device_t dev)
 
 static void set_param(struct spi_l6470_device *device, struct param_data *data)
 {
-	rt_uint8_t send_buf[2];
+    rt_uint8_t send_buf[2];
 
-	l6470_lock(device);
-	
+    l6470_lock(device);
+    
     /* Send SetParam operation code to dSPIN */
-	send_buf[TILT] = dSPIN_SET_PARAM | data->param;
-	send_buf[PAN]  = dSPIN_SET_PARAM | data->param; 
-	rt_spi_send(device->spi_dev, send_buf, 2);
+    send_buf[TILT] = dSPIN_SET_PARAM | data->param;
+    send_buf[PAN]  = dSPIN_SET_PARAM | data->param; 
+    rt_spi_send(device->spi_dev, send_buf, 2);
 
     switch (data->param)
     {
@@ -87,9 +87,9 @@ static void set_param(struct spi_l6470_device *device, struct param_data *data)
         case dSPIN_MARK: ;
         case dSPIN_SPEED:
             /* Send parameter - byte 2 to dSPIN */
-			send_buf[TILT] = (uint8_t)(data->tilt_value >> 16);
-			send_buf[PAN]  = (uint8_t)(data->pan_value >> 16); 
-			rt_spi_send(device->spi_dev, send_buf, 2);
+            send_buf[TILT] = (uint8_t)(data->tilt_value >> 16);
+            send_buf[PAN]  = (uint8_t)(data->pan_value >> 16); 
+            rt_spi_send(device->spi_dev, send_buf, 2);
         case dSPIN_ACC: ;
         case dSPIN_DEC: ;
         case dSPIN_MAX_SPEED: ;
@@ -99,30 +99,30 @@ static void set_param(struct spi_l6470_device *device, struct param_data *data)
         case dSPIN_CONFIG: ;
         case dSPIN_STATUS:
             /* Send parameter - byte 1 to dSPIN */
-			send_buf[TILT] = (uint8_t)(data->tilt_value >> 8);
-			send_buf[PAN]  = (uint8_t)(data->pan_value >> 8); 
-			rt_spi_send(device->spi_dev, send_buf, 2);
+            send_buf[TILT] = (uint8_t)(data->tilt_value >> 8);
+            send_buf[PAN]  = (uint8_t)(data->pan_value >> 8); 
+            rt_spi_send(device->spi_dev, send_buf, 2);
         default:
             /* Send parameter - byte 0 to dSPIN */
-			send_buf[TILT] = (uint8_t)(data->tilt_value);
-			send_buf[PAN]  = (uint8_t)(data->pan_value); 
-			rt_spi_send(device->spi_dev, send_buf, 2);
+            send_buf[TILT] = (uint8_t)(data->tilt_value);
+            send_buf[PAN]  = (uint8_t)(data->pan_value); 
+            rt_spi_send(device->spi_dev, send_buf, 2);
     }
 
-	l6470_unlock(device);
+    l6470_unlock(device);
 }
 
 static void pan_set_param(struct spi_l6470_device *device, struct param_data *data)
 {
-	rt_uint8_t send_buf[2];
+    rt_uint8_t send_buf[2];
 
-	l6470_lock(device);
-	
-	send_buf[TILT] = dSPIN_NOP;
+    l6470_lock(device);
+    
+    send_buf[TILT] = dSPIN_NOP;
 
     /* Send SetParam operation code to dSPIN */
-	send_buf[PAN]  = dSPIN_SET_PARAM | data->param; 
-	rt_spi_send(device->spi_dev, send_buf, 2);
+    send_buf[PAN]  = dSPIN_SET_PARAM | data->param; 
+    rt_spi_send(device->spi_dev, send_buf, 2);
 
     switch (data->param)
     {
@@ -130,8 +130,8 @@ static void pan_set_param(struct spi_l6470_device *device, struct param_data *da
         case dSPIN_MARK: ;
         case dSPIN_SPEED:
             /* Send parameter - byte 2 to dSPIN */
-			send_buf[PAN]  = (uint8_t)(data->pan_value >> 16); 
-			rt_spi_send(device->spi_dev, send_buf, 2);
+            send_buf[PAN]  = (uint8_t)(data->pan_value >> 16); 
+            rt_spi_send(device->spi_dev, send_buf, 2);
         case dSPIN_ACC: ;
         case dSPIN_DEC: ;
         case dSPIN_MAX_SPEED: ;
@@ -141,28 +141,28 @@ static void pan_set_param(struct spi_l6470_device *device, struct param_data *da
         case dSPIN_CONFIG: ;
         case dSPIN_STATUS:
             /* Send parameter - byte 1 to dSPIN */
-			send_buf[PAN]  = (uint8_t)(data->pan_value >> 8); 
-			rt_spi_send(device->spi_dev, send_buf, 2);
+            send_buf[PAN]  = (uint8_t)(data->pan_value >> 8); 
+            rt_spi_send(device->spi_dev, send_buf, 2);
         default:
             /* Send parameter - byte 0 to dSPIN */
-			send_buf[PAN]  = (uint8_t)(data->pan_value); 
-			rt_spi_send(device->spi_dev, send_buf, 2);
+            send_buf[PAN]  = (uint8_t)(data->pan_value); 
+            rt_spi_send(device->spi_dev, send_buf, 2);
     }
 
-	l6470_unlock(device);
+    l6470_unlock(device);
 }
 
 static void tilt_set_param(struct spi_l6470_device *device, struct param_data *data)
 {
-	rt_uint8_t send_buf[2];
+    rt_uint8_t send_buf[2];
 
-	l6470_lock(device);
-	
-	send_buf[PAN]  = dSPIN_NOP; 
+    l6470_lock(device);
+    
+    send_buf[PAN]  = dSPIN_NOP; 
 
     /* Send SetParam operation code to dSPIN */
-	send_buf[TILT] = dSPIN_SET_PARAM | data->param;
-	rt_spi_send(device->spi_dev, send_buf, 2);
+    send_buf[TILT] = dSPIN_SET_PARAM | data->param;
+    rt_spi_send(device->spi_dev, send_buf, 2);
 
     switch (data->param)
     {
@@ -170,8 +170,8 @@ static void tilt_set_param(struct spi_l6470_device *device, struct param_data *d
         case dSPIN_MARK: ;
         case dSPIN_SPEED:
             /* Send parameter - byte 2 to dSPIN */
-			send_buf[TILT] = (uint8_t)(data->tilt_value >> 16);
-			rt_spi_send(device->spi_dev, send_buf, 2);
+            send_buf[TILT] = (uint8_t)(data->tilt_value >> 16);
+            rt_spi_send(device->spi_dev, send_buf, 2);
         case dSPIN_ACC: ;
         case dSPIN_DEC: ;
         case dSPIN_MAX_SPEED: ;
@@ -181,57 +181,57 @@ static void tilt_set_param(struct spi_l6470_device *device, struct param_data *d
         case dSPIN_CONFIG: ;
         case dSPIN_STATUS:
             /* Send parameter - byte 1 to dSPIN */
-			send_buf[TILT] = (uint8_t)(data->tilt_value >> 8);
-			rt_spi_send(device->spi_dev, send_buf, 2);
+            send_buf[TILT] = (uint8_t)(data->tilt_value >> 8);
+            rt_spi_send(device->spi_dev, send_buf, 2);
         default:
             /* Send parameter - byte 0 to dSPIN */
-			send_buf[TILT] = (uint8_t)(data->tilt_value);
-			rt_spi_send(device->spi_dev, send_buf, 2);
+            send_buf[TILT] = (uint8_t)(data->tilt_value);
+            rt_spi_send(device->spi_dev, send_buf, 2);
     }
 
-	l6470_unlock(device);
+    l6470_unlock(device);
 }
 
 static void get_param(struct spi_l6470_device *device, struct param_data *data)
 {
     uint32_t temp = 0;
-	rt_uint8_t send_buf[2];
-	rt_uint8_t recv_buf[2];
+    rt_uint8_t send_buf[2];
+    rt_uint8_t recv_buf[2];
 
-	data->pan_value  = 0;
-	data->tilt_value = 0;
-	
-	l6470_lock(device);
-	
+    data->pan_value  = 0;
+    data->tilt_value = 0;
+    
+    l6470_lock(device);
+    
     /* Send GetParam operation code to dSPIN */
-	send_buf[PAN]  = dSPIN_GET_PARAM | data->param;
-	send_buf[TILT] = dSPIN_GET_PARAM | data->param;
-	rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
+    send_buf[PAN]  = dSPIN_GET_PARAM | data->param;
+    send_buf[TILT] = dSPIN_GET_PARAM | data->param;
+    rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
 
-	temp = recv_buf[PAN];
+    temp = recv_buf[PAN];
     /* MSB which should be 0 */
     temp = temp << 24;
     data->pan_value |= temp;
 
-	temp = recv_buf[TILT];
+    temp = recv_buf[TILT];
     /* MSB which should be 0 */
     temp = temp << 24;
     data->tilt_value |= temp;
 
-	switch (data->param)
+    switch (data->param)
     {
         case dSPIN_ABS_POS: ;
         case dSPIN_MARK: ;
         case dSPIN_SPEED:
-			send_buf[PAN]  = (uint8_t)(0x00);
-			send_buf[TILT] = (uint8_t)(0x00);
-			rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
+            send_buf[PAN]  = (uint8_t)(0x00);
+            send_buf[TILT] = (uint8_t)(0x00);
+            rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
 
-			temp = recv_buf[PAN];
+            temp = recv_buf[PAN];
             temp = temp << 16;
             data->pan_value |= temp;
 
-			temp = recv_buf[TILT];
+            temp = recv_buf[TILT];
             temp = temp << 16;
             data->tilt_value |= temp;
         case dSPIN_ACC: ;
@@ -242,51 +242,51 @@ static void get_param(struct spi_l6470_device *device, struct param_data *data)
         case dSPIN_INT_SPD: ;
         case dSPIN_CONFIG: ;
         case dSPIN_STATUS:
-			send_buf[PAN] = (uint8_t)(0x00);
-			send_buf[TILT] = (uint8_t)(0x00);
-			rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
+            send_buf[PAN] = (uint8_t)(0x00);
+            send_buf[TILT] = (uint8_t)(0x00);
+            rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
 
-			temp = recv_buf[PAN];
+            temp = recv_buf[PAN];
             temp = temp << 8;
             data->pan_value |= temp;
 
-			temp = recv_buf[TILT];
-			temp = temp << 8;
-			data->tilt_value |= temp;
+            temp = recv_buf[TILT];
+            temp = temp << 8;
+            data->tilt_value |= temp;
         default:
-			send_buf[PAN] = (uint8_t)(0x00);
-			send_buf[TILT] = (uint8_t)(0x00);
-			rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
-			
-			temp = recv_buf[PAN];
+            send_buf[PAN] = (uint8_t)(0x00);
+            send_buf[TILT] = (uint8_t)(0x00);
+            rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
+            
+            temp = recv_buf[PAN];
             data->pan_value |= temp;
 
-			temp = recv_buf[TILT];
+            temp = recv_buf[TILT];
             data->tilt_value |= temp;
     }
 
-	l6470_lock(device);
+    l6470_lock(device);
 
-	rt_kprintf("PARAM(%d) of PAN  is 0x%x\r\n", data->param, data->pan_value);
-	rt_kprintf("PARAM(%d) of TILT is 0x%x\r\n", data->param, data->tilt_value);
+    rt_kprintf("PARAM(%d) of PAN  is 0x%x\r\n", data->param, data->pan_value);
+    rt_kprintf("PARAM(%d) of TILT is 0x%x\r\n", data->param, data->tilt_value);
 }
 
 static void pan_get_param(struct spi_l6470_device *device, struct param_data *data)
 {
     uint32_t temp = 0;
-	rt_uint8_t send_buf[2];
-	rt_uint8_t recv_buf[2];
+    rt_uint8_t send_buf[2];
+    rt_uint8_t recv_buf[2];
 
-	data->pan_value = 0;
-	
-	l6470_lock(device);
-	
-	send_buf[TILT] = dSPIN_NOP; 
+    data->pan_value = 0;
+    
+    l6470_lock(device);
+    
+    send_buf[TILT] = dSPIN_NOP; 
 
     /* Send GetParam operation code to dSPIN */
-	send_buf[PAN] = dSPIN_GET_PARAM | data->param;
-	rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
-	temp = recv_buf[PAN];
+    send_buf[PAN] = dSPIN_GET_PARAM | data->param;
+    rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
+    temp = recv_buf[PAN];
     /* MSB which should be 0 */
     temp = temp << 24;
     data->pan_value |= temp;
@@ -295,9 +295,9 @@ static void pan_get_param(struct spi_l6470_device *device, struct param_data *da
         case dSPIN_ABS_POS: ;
         case dSPIN_MARK: ;
         case dSPIN_SPEED:
-			send_buf[PAN] = (uint8_t)(0x00);
-			rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
-			temp = recv_buf[PAN];
+            send_buf[PAN] = (uint8_t)(0x00);
+            rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
+            temp = recv_buf[PAN];
             temp = temp << 16;
             data->pan_value |= temp;
         case dSPIN_ACC: ;
@@ -308,19 +308,19 @@ static void pan_get_param(struct spi_l6470_device *device, struct param_data *da
         case dSPIN_INT_SPD: ;
         case dSPIN_CONFIG: ;
         case dSPIN_STATUS:
-			send_buf[PAN] = (uint8_t)(0x00);
-			rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
-			temp = recv_buf[PAN];
+            send_buf[PAN] = (uint8_t)(0x00);
+            rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
+            temp = recv_buf[PAN];
             temp = temp << 8;
             data->pan_value |= temp;
         default:
-			send_buf[PAN] = (uint8_t)(0x00);
-			rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
-			temp = recv_buf[PAN];
+            send_buf[PAN] = (uint8_t)(0x00);
+            rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
+            temp = recv_buf[PAN];
             data->pan_value |= temp;
     }
 
-	l6470_lock(device);
+    l6470_lock(device);
 
     rt_kprintf("PARAM(%d) of PAN is 0x%x\r\n", data->param, data->pan_value);
 }
@@ -328,19 +328,19 @@ static void pan_get_param(struct spi_l6470_device *device, struct param_data *da
 static void tilt_get_param(struct spi_l6470_device *device, struct param_data *data)
 {
     uint32_t temp = 0;
-	rt_uint8_t send_buf[2];
-	rt_uint8_t recv_buf[2];
+    rt_uint8_t send_buf[2];
+    rt_uint8_t recv_buf[2];
 
-	data->tilt_value = 0;
-	
-	l6470_lock(device);
-	
-	send_buf[PAN] = dSPIN_NOP; 
+    data->tilt_value = 0;
+    
+    l6470_lock(device);
+    
+    send_buf[PAN] = dSPIN_NOP; 
 
     /* Send GetParam operation code to dSPIN */
-	send_buf[TILT] = dSPIN_GET_PARAM | data->param;
-	rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
-	temp = recv_buf[TILT];
+    send_buf[TILT] = dSPIN_GET_PARAM | data->param;
+    rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
+    temp = recv_buf[TILT];
     /* MSB which should be 0 */
     temp = temp << 24;
     data->tilt_value |= temp;
@@ -349,9 +349,9 @@ static void tilt_get_param(struct spi_l6470_device *device, struct param_data *d
         case dSPIN_ABS_POS: ;
         case dSPIN_MARK: ;
         case dSPIN_SPEED:
-			send_buf[TILT] = (uint8_t)(0x00);
-			rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
-			temp = recv_buf[TILT];
+            send_buf[TILT] = (uint8_t)(0x00);
+            rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
+            temp = recv_buf[TILT];
             temp = temp << 16;
             data->tilt_value |= temp;
         case dSPIN_ACC: ;
@@ -362,19 +362,19 @@ static void tilt_get_param(struct spi_l6470_device *device, struct param_data *d
         case dSPIN_INT_SPD: ;
         case dSPIN_CONFIG: ;
         case dSPIN_STATUS:
-			send_buf[TILT] = (uint8_t)(0x00);
-			rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
-			temp = recv_buf[TILT];
+            send_buf[TILT] = (uint8_t)(0x00);
+            rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
+            temp = recv_buf[TILT];
             temp = temp << 8;
             data->tilt_value |= temp;
         default:
-			send_buf[TILT] = (uint8_t)(0x00);
-			rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
-			temp = recv_buf[TILT];
+            send_buf[TILT] = (uint8_t)(0x00);
+            rt_spi_transfer(device->spi_dev, send_buf, recv_buf, 2);
+            temp = recv_buf[TILT];
             data->tilt_value |= temp;
     }
 
-	l6470_lock(device);
+    l6470_lock(device);
 
     rt_kprintf("PARAM(%d) of TILT is 0x%x\r\n", data->param, data->tilt_value);
 }
@@ -382,162 +382,162 @@ static void tilt_get_param(struct spi_l6470_device *device, struct param_data *d
 
 static void move(struct spi_l6470_device *device, struct move_data *data)
 {
-	rt_uint8_t send_buf[2];
+    rt_uint8_t send_buf[2];
 
-	l6470_lock(device);
-	
-	/* Send Move operation code to dSPIN */
-	send_buf[TILT] = dSPIN_MOVE | data->tilt_dir;
-	send_buf[PAN]  = dSPIN_MOVE | data->pan_dir; 
-	rt_spi_send(device->spi_dev, send_buf, 2);
+    l6470_lock(device);
+    
+    /* Send Move operation code to dSPIN */
+    send_buf[TILT] = dSPIN_MOVE | data->tilt_dir;
+    send_buf[PAN]  = dSPIN_MOVE | data->pan_dir; 
+    rt_spi_send(device->spi_dev, send_buf, 2);
 
-	/* Send n_step - byte 2 data dSPIN */
-	send_buf[TILT] = (uint8_t)(data->tilt_steps >> 16);
-	send_buf[PAN]  = (uint8_t)(data->pan_steps >> 16); 
-	rt_spi_send(device->spi_dev, send_buf, 2);
+    /* Send n_step - byte 2 data dSPIN */
+    send_buf[TILT] = (uint8_t)(data->tilt_steps >> 16);
+    send_buf[PAN]  = (uint8_t)(data->pan_steps >> 16); 
+    rt_spi_send(device->spi_dev, send_buf, 2);
 
-	/* Send n_step - byte 1 data dSPIN */
-	send_buf[TILT] = (uint8_t)(data->tilt_steps >> 8);
-	send_buf[PAN]  = (uint8_t)(data->pan_steps >> 8); 
-	rt_spi_send(device->spi_dev, send_buf, 2);
+    /* Send n_step - byte 1 data dSPIN */
+    send_buf[TILT] = (uint8_t)(data->tilt_steps >> 8);
+    send_buf[PAN]  = (uint8_t)(data->pan_steps >> 8); 
+    rt_spi_send(device->spi_dev, send_buf, 2);
 
-	/* Send n_step - byte 0 data dSPIN */
-	send_buf[TILT] = (uint8_t)(data->tilt_steps);
-	send_buf[PAN]  = (uint8_t)(data->pan_steps); 
-	rt_spi_send(device->spi_dev, send_buf, 2);
-		
-	l6470_unlock(device);
+    /* Send n_step - byte 0 data dSPIN */
+    send_buf[TILT] = (uint8_t)(data->tilt_steps);
+    send_buf[PAN]  = (uint8_t)(data->pan_steps); 
+    rt_spi_send(device->spi_dev, send_buf, 2);
+        
+    l6470_unlock(device);
 }
 
 static void pan_move(struct spi_l6470_device *device, struct move_data *data)
 {
-	rt_uint8_t send_buf[2];
+    rt_uint8_t send_buf[2];
 
-	l6470_lock(device);
-	
-	send_buf[TILT] = dSPIN_NOP;
+    l6470_lock(device);
+    
+    send_buf[TILT] = dSPIN_NOP;
 
-	/* Send Move operation code to dSPIN */
-	send_buf[PAN]  = dSPIN_MOVE | data->pan_dir; 
-	rt_spi_send(device->spi_dev, send_buf, 2);
+    /* Send Move operation code to dSPIN */
+    send_buf[PAN]  = dSPIN_MOVE | data->pan_dir; 
+    rt_spi_send(device->spi_dev, send_buf, 2);
 
-	/* Send n_step - byte 2 data dSPIN */
-	send_buf[PAN]  = (uint8_t)(data->pan_steps >> 16); 
-	rt_spi_send(device->spi_dev, send_buf, 2);
+    /* Send n_step - byte 2 data dSPIN */
+    send_buf[PAN]  = (uint8_t)(data->pan_steps >> 16); 
+    rt_spi_send(device->spi_dev, send_buf, 2);
 
-	/* Send n_step - byte 1 data dSPIN */
-	send_buf[PAN]  = (uint8_t)(data->pan_steps >> 8); 
-	rt_spi_send(device->spi_dev, send_buf, 2);
+    /* Send n_step - byte 1 data dSPIN */
+    send_buf[PAN]  = (uint8_t)(data->pan_steps >> 8); 
+    rt_spi_send(device->spi_dev, send_buf, 2);
 
-	/* Send n_step - byte 0 data dSPIN */
-	send_buf[PAN]  = (uint8_t)(data->pan_steps); 
-	rt_spi_send(device->spi_dev, send_buf, 2);
-		
-	l6470_unlock(device);
+    /* Send n_step - byte 0 data dSPIN */
+    send_buf[PAN]  = (uint8_t)(data->pan_steps); 
+    rt_spi_send(device->spi_dev, send_buf, 2);
+        
+    l6470_unlock(device);
 }
 
 static void tilt_move(struct spi_l6470_device *device, struct move_data *data)
 {
-	rt_uint8_t send_buf[2];
+    rt_uint8_t send_buf[2];
 
-	l6470_lock(device);
-	
-	send_buf[PAN]  = dSPIN_NOP; 
+    l6470_lock(device);
+    
+    send_buf[PAN]  = dSPIN_NOP; 
 
-	/* Send Move operation code to dSPIN */
-	send_buf[TILT] = dSPIN_MOVE | data->tilt_dir;
-	rt_spi_send(device->spi_dev, send_buf, 2);
+    /* Send Move operation code to dSPIN */
+    send_buf[TILT] = dSPIN_MOVE | data->tilt_dir;
+    rt_spi_send(device->spi_dev, send_buf, 2);
 
-	/* Send n_step - byte 2 data dSPIN */
-	send_buf[TILT] = (uint8_t)(data->tilt_steps >> 16);
-	rt_spi_send(device->spi_dev, send_buf, 2);
+    /* Send n_step - byte 2 data dSPIN */
+    send_buf[TILT] = (uint8_t)(data->tilt_steps >> 16);
+    rt_spi_send(device->spi_dev, send_buf, 2);
 
-	/* Send n_step - byte 1 data dSPIN */
-	send_buf[TILT] = (uint8_t)(data->tilt_steps >> 8);
-	rt_spi_send(device->spi_dev, send_buf, 2);
+    /* Send n_step - byte 1 data dSPIN */
+    send_buf[TILT] = (uint8_t)(data->tilt_steps >> 8);
+    rt_spi_send(device->spi_dev, send_buf, 2);
 
-	/* Send n_step - byte 0 data dSPIN */
-	send_buf[TILT] = (uint8_t)(data->tilt_steps);
-	rt_spi_send(device->spi_dev, send_buf, 2);
-		
-	l6470_unlock(device);
+    /* Send n_step - byte 0 data dSPIN */
+    send_buf[TILT] = (uint8_t)(data->tilt_steps);
+    rt_spi_send(device->spi_dev, send_buf, 2);
+        
+    l6470_unlock(device);
 }
 
 static void get_status(struct spi_l6470_device *dev, struct motor_status *status)
 {
-	rt_uint8_t send_buf[2];
-	rt_uint8_t recv_buf[2];
+    rt_uint8_t send_buf[2];
+    rt_uint8_t recv_buf[2];
 
-	l6470_lock(dev);
-	
+    l6470_lock(dev);
+    
     /* Send GetParam operation code to dSPIN */
-	send_buf[PAN]  = dSPIN_GET_STATUS;
-	send_buf[TILT] = dSPIN_GET_STATUS;
-	rt_spi_transfer(dev->spi_dev, send_buf, recv_buf, 2);
+    send_buf[PAN]  = dSPIN_GET_STATUS;
+    send_buf[TILT] = dSPIN_GET_STATUS;
+    rt_spi_transfer(dev->spi_dev, send_buf, recv_buf, 2);
 
-	send_buf[PAN]  = (uint8_t)(0x00);
-	send_buf[TILT] = (uint8_t)(0x00);
-	rt_spi_transfer(dev->spi_dev, send_buf, recv_buf, 2);
+    send_buf[PAN]  = (uint8_t)(0x00);
+    send_buf[TILT] = (uint8_t)(0x00);
+    rt_spi_transfer(dev->spi_dev, send_buf, recv_buf, 2);
 
-	status->pan_status.value  = recv_buf[PAN];
-	status->tilt_status.value = recv_buf[TILT];
-	
-	send_buf[PAN]  = (uint8_t)(0x00);
-	send_buf[TILT] = (uint8_t)(0x00);
-	rt_spi_transfer(dev->spi_dev, send_buf, recv_buf, 2);
+    status->pan_status.value  = recv_buf[PAN];
+    status->tilt_status.value = recv_buf[TILT];
+    
+    send_buf[PAN]  = (uint8_t)(0x00);
+    send_buf[TILT] = (uint8_t)(0x00);
+    rt_spi_transfer(dev->spi_dev, send_buf, recv_buf, 2);
 
-	status->pan_status.value  = (status->pan_status.value << 8) | recv_buf[PAN];
-	status->tilt_status.value = (status->tilt_status.value << 8) | recv_buf[TILT];
+    status->pan_status.value  = (status->pan_status.value << 8) | recv_buf[PAN];
+    status->tilt_status.value = (status->tilt_status.value << 8) | recv_buf[TILT];
 
     rt_kprintf("pan_status  = 0x%x\r\n", status->pan_status.value);
     rt_kprintf("tilt_status = 0x%x\r\n", status->tilt_status.value);
 
-	l6470_lock(dev);
+    l6470_lock(dev);
 }
 
 static rt_err_t l6470_control(rt_device_t dev, rt_uint8_t cmd, void *args)
 {
-	struct spi_l6470_device *device = (struct spi_l6470_device *)dev;
+    struct spi_l6470_device *device = (struct spi_l6470_device *)dev;
 
     RT_ASSERT(dev != RT_NULL);
 
-	switch (cmd)
-	{
-	case SET_PARAM:
-		set_param(device, (struct param_data *)args);
-		break;
-	case PAN_SET_PARAM:
-		pan_set_param(device, (struct param_data *)args);
-		break;
-	case TILT_SET_PARAM:
-		tilt_set_param(device, (struct param_data *)args);
-		break;		
-	case GET_PARAM:
-		get_param(device, (struct param_data *)args);
-		break;
-	case PAN_GET_PARAM:
-		pan_get_param(device, (struct param_data *)args);
-		break;
-	case TILT_GET_PARAM:
-		tilt_get_param(device, (struct param_data *)args);
-		break;		
-	case RUN:
-		break;
-	case MOVE:
-		move(device, (struct move_data *)args);
-		break;
-	case PAN_MOVE:
-		pan_move(device, (struct move_data *)args);
-		break;
-	case TILT_MOVE:
-		tilt_move(device, (struct move_data *)args);
-		break;
-	case GET_STATUS:
-		get_status(device, (struct motor_status *)args);
-		break;
-	default:
-		break;
-	}
+    switch (cmd)
+    {
+    case SET_PARAM:
+        set_param(device, (struct param_data *)args);
+        break;
+    case PAN_SET_PARAM:
+        pan_set_param(device, (struct param_data *)args);
+        break;
+    case TILT_SET_PARAM:
+        tilt_set_param(device, (struct param_data *)args);
+        break;      
+    case GET_PARAM:
+        get_param(device, (struct param_data *)args);
+        break;
+    case PAN_GET_PARAM:
+        pan_get_param(device, (struct param_data *)args);
+        break;
+    case TILT_GET_PARAM:
+        tilt_get_param(device, (struct param_data *)args);
+        break;      
+    case RUN:
+        break;
+    case MOVE:
+        move(device, (struct move_data *)args);
+        break;
+    case PAN_MOVE:
+        pan_move(device, (struct move_data *)args);
+        break;
+    case TILT_MOVE:
+        tilt_move(device, (struct move_data *)args);
+        break;
+    case GET_STATUS:
+        get_status(device, (struct motor_status *)args);
+        break;
+    default:
+        break;
+    }
 
     return RT_EOK;
 }
@@ -592,7 +592,7 @@ rt_err_t rt_hw_l6470_init(const char *l6470_device_name, const char *spi_device_
     l6470.device.init    = l6470_init;
     l6470.device.open    = l6470_open;
     l6470.device.close   = l6470_close;
-    l6470.device.read 	 = l6470_read;
+    l6470.device.read    = l6470_read;
     l6470.device.write   = l6470_write;
     l6470.device.control = l6470_control;
     /* no private */
@@ -614,12 +614,12 @@ static rt_err_t move_cmd(dSPIN_Direction_TypeDef pan_dir,
                          rt_uint32_t             tilt_steps)
 {
     rt_device_t device;
-	struct move_data data;
+    struct move_data data;
 
-	data.pan_dir    = pan_dir;
-	data.pan_steps  = pan_steps;
-	data.tilt_dir   = tilt_dir;
-	data.tilt_steps = tilt_steps;
+    data.pan_dir    = pan_dir;
+    data.pan_steps  = pan_steps;
+    data.tilt_dir   = tilt_dir;
+    data.tilt_steps = tilt_steps;
 
     device = rt_device_find("l6470");
     if (device == RT_NULL)
@@ -627,7 +627,7 @@ static rt_err_t move_cmd(dSPIN_Direction_TypeDef pan_dir,
         return -RT_ERROR;
     }
 
-    return rt_device_control(device, MOVE, &data);	
+    return rt_device_control(device, MOVE, &data);  
 }
 FINSH_FUNCTION_EXPORT(move_cmd, move the pan and tilt motor)
 
@@ -635,10 +635,10 @@ static rt_err_t pan_move_cmd(dSPIN_Direction_TypeDef pan_dir,
                              rt_uint32_t             pan_steps)
 {
     rt_device_t device;
-	struct move_data data;
+    struct move_data data;
 
-	data.pan_dir    = pan_dir;
-	data.pan_steps  = pan_steps;
+    data.pan_dir    = pan_dir;
+    data.pan_steps  = pan_steps;
 
     device = rt_device_find("l6470");
     if (device == RT_NULL)
@@ -646,7 +646,7 @@ static rt_err_t pan_move_cmd(dSPIN_Direction_TypeDef pan_dir,
         return -RT_ERROR;
     }
 
-    return rt_device_control(device, PAN_MOVE, &data);	
+    return rt_device_control(device, PAN_MOVE, &data);  
 }
 FINSH_FUNCTION_EXPORT(pan_move_cmd, move the pan motor)
 
@@ -654,10 +654,10 @@ static rt_err_t tilt_move_cmd(dSPIN_Direction_TypeDef tilt_dir,
                               rt_uint32_t             tilt_steps)
 {
     rt_device_t device;
-	struct move_data data;
+    struct move_data data;
 
-	data.tilt_dir    = tilt_dir;
-	data.tilt_steps  = tilt_steps;
+    data.tilt_dir    = tilt_dir;
+    data.tilt_steps  = tilt_steps;
 
     device = rt_device_find("l6470");
     if (device == RT_NULL)
@@ -665,52 +665,52 @@ static rt_err_t tilt_move_cmd(dSPIN_Direction_TypeDef tilt_dir,
         return -RT_ERROR;
     }
 
-    return rt_device_control(device, TILT_MOVE, &data);	
+    return rt_device_control(device, TILT_MOVE, &data); 
 }
 FINSH_FUNCTION_EXPORT(tilt_move_cmd, move the tilt motor)
 
 static rt_err_t pan_get_params(dSPIN_Registers_TypeDef param)
 {
     rt_device_t dev;
-	struct param_data data;
+    struct param_data data;
 
-	data.param      = param;
-	data.pan_value  = 0;
-	data.tilt_value = 0;
-	
+    data.param      = param;
+    data.pan_value  = 0;
+    data.tilt_value = 0;
+    
     dev = rt_device_find("l6470");
     if (dev == RT_NULL)
     {
         return -RT_ERROR;
     }
 
-    return rt_device_control(dev, PAN_GET_PARAM, &data);	
+    return rt_device_control(dev, PAN_GET_PARAM, &data);    
 }
 FINSH_FUNCTION_EXPORT(pan_get_params, get parameters of pan)
 
 static rt_err_t get_params(dSPIN_Registers_TypeDef param)
 {
     rt_device_t dev;
-	struct param_data data;
+    struct param_data data;
 
-	data.param      = param;
-	data.pan_value  = 0;
-	data.tilt_value = 0;
-	
+    data.param      = param;
+    data.pan_value  = 0;
+    data.tilt_value = 0;
+    
     dev = rt_device_find("l6470");
     if (dev == RT_NULL)
     {
         return -RT_ERROR;
     }
 
-    return rt_device_control(dev, GET_PARAM, &data);	
+    return rt_device_control(dev, GET_PARAM, &data);    
 }
 FINSH_FUNCTION_EXPORT(get_params, get parameters of pan and tilt)
 
 static rt_err_t get_status_cmd(void)
 {
     rt_device_t dev;
-	struct motor_status status;
+    struct motor_status status;
 
     dev = rt_device_find("l6470");
     if (dev == RT_NULL)
@@ -718,7 +718,7 @@ static rt_err_t get_status_cmd(void)
         return -RT_ERROR;
     }
 
-    return rt_device_control(dev, GET_STATUS, &status);	
+    return rt_device_control(dev, GET_STATUS, &status); 
 }
 FINSH_FUNCTION_EXPORT(get_status_cmd, get status of pan and tilt)
 

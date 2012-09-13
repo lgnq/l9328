@@ -12,11 +12,22 @@
  * 2009-01-05     Bernard      the first version
  */
 
-#ifndef __USART_H__
-#define __USART_H__
+#ifndef __DRV_USART_H__
+#define __DRV_USART_H__
 
 #include <rthw.h>
 #include <rtthread.h>
+
+#include "stm32f10x.h"
+
+struct stm32_uart
+{
+    USART_TypeDef *uart_device;
+    IRQn_Type	   irq; 
+};
+
+#define UART_ENABLE_IRQ(n)            NVIC_EnableIRQ((n))
+#define UART_DISABLE_IRQ(n)           NVIC_DisableIRQ((n))
 
 void rt_hw_usart_init(void);
 

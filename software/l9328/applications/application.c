@@ -106,8 +106,8 @@ static void rt_hw_spi2_init(void)
 
 void rt_init_thread_entry(void *parameter)
 {
-	dSPIN_RegsStruct_TypeDef pan_regs;
-	dSPIN_RegsStruct_TypeDef tilt_regs;
+    dSPIN_RegsStruct_TypeDef pan_regs;
+    dSPIN_RegsStruct_TypeDef tilt_regs;
 
 #ifdef RT_USING_COMPONENTS_INIT
     /* initialization RT-Thread Components */
@@ -115,9 +115,9 @@ void rt_init_thread_entry(void *parameter)
 #endif
 
 #ifdef RT_USING_SPI
-		rt_hw_spi2_init();
-	
-		rt_hw_l6470_init("l6470", "spi20");
+        rt_hw_spi2_init();
+
+        rt_hw_l6470_init("l6470", "spi20");
 #endif
 }
 
@@ -161,7 +161,7 @@ int rt_application_init(void)
 
     if (tilt_thread != RT_NULL)
         rt_thread_startup(tilt_thread);
-	
+    
     return 0;
 }
 

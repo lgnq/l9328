@@ -39,11 +39,11 @@
 void NVIC_Configuration(void)
 {
 #ifdef  VECT_TAB_RAM
-	/* Set the Vector Table base location at 0x20000000 */
-	NVIC_SetVectorTable(NVIC_VectTab_RAM, 0x0);
+    /* Set the Vector Table base location at 0x20000000 */
+    NVIC_SetVectorTable(NVIC_VectTab_RAM, 0x0);
 #else  /* VECT_TAB_FLASH  */
-	/* Set the Vector Table base location at 0x08000000 */
-	NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
+    /* Set the Vector Table base location at 0x08000000 */
+    NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
 #endif
 }
 
@@ -53,13 +53,13 @@ void NVIC_Configuration(void)
  */
 void rt_hw_timer_handler(void)
 {
-	/* enter interrupt */
-	rt_interrupt_enter();
+    /* enter interrupt */
+    rt_interrupt_enter();
 
-	rt_tick_increase();
+    rt_tick_increase();
 
-	/* leave interrupt */
-	rt_interrupt_leave();
+    /* leave interrupt */
+    rt_interrupt_leave();
 }
 
 /**
@@ -67,17 +67,17 @@ void rt_hw_timer_handler(void)
  */
 void rt_hw_board_init(void)
 {
-	/* NVIC Configuration */
-	NVIC_Configuration();
+    /* NVIC Configuration */
+    NVIC_Configuration();
 
     /* Configure the SysTick */
     SysTick_Config(SystemCoreClock / RT_TICK_PER_SECOND);
 
-	rt_hw_usart_init();
-	rt_console_set_device(CONSOLE_DEVICE);
+    rt_hw_usart_init();
+    rt_console_set_device(CONSOLE_DEVICE);
 
 #ifdef RT_USING_RTC
-	rt_hw_rtc_init();
+    rt_hw_rtc_init();
 #endif
 }
 

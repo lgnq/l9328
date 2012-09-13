@@ -8,11 +8,13 @@ cwd = GetCurrentDir()
 src = Split("""
 board.c
 led.c
-dspin.c
-usart.c
-serial.c
+motor.c
 stm32f10x_it.c
 """)
+
+# add USART driver.
+if GetDepend('RT_USING_SERIAL') == True:
+	src += ['drv_usart.c']
 
 # add SPI driver.
 if GetDepend('RT_USING_SPI') == True:

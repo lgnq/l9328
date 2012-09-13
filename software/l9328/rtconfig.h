@@ -59,7 +59,13 @@
 /* SECTION: Device System */
 /* Using Device System */
 #define RT_USING_DEVICE
+#define RT_USING_SERIAL
 #define RT_USING_UART1
+#define RT_USING_USART1_REMAP	0
+#define RT_USING_UART2
+#define RT_USING_USART2_REMAP	0
+#define RT_USING_UART3
+#define RT_USING_USART3_REMAP	1
 
 // <section name="RT_USING_CONSOLE" description="Using console" default="true" >
 #define RT_USING_CONSOLE
