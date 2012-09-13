@@ -1,0 +1,13 @@
+LED:
+PB8
+
+serial configuration:
+
+finsh:
+USART1 REMAP 0
+
+RS485:
+USART3 REMAP 1
+
+CAMERA:
+USART2 REMAP 0
