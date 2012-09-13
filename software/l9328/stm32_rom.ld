@@ -10,7 +10,7 @@ MEMORY
     DATA (rw) : ORIGIN = 0x20000000, LENGTH =  64k /* 64K sram */
 }
 ENTRY(Reset_Handler)
-_system_stack_size = 0x100;
+_system_stack_size = 0x200;
 
 SECTIONS
 {
@@ -42,7 +42,7 @@ SECTIONS
         _etext = .;
     } > CODE = 0
 
-    /* .ARM.exidx is sorted, so has to go in its own output section.  */
+    /* .ARM.exidx is sorted, so has to go in its own output section. */
     __exidx_start = .;
     .ARM.exidx :
     {
@@ -70,12 +70,12 @@ SECTIONS
         _edata = . ;
     } >DATA
 
-	.stack : 
-	{
-		. = . + _system_stack_size;
-		. = ALIGN(4);
-		_estack = .;
-	} >DATA
+    .stack : 
+    {
+        . = . + _system_stack_size;
+        . = ALIGN(4);
+        _estack = .;
+    } >DATA
 
     __bss_start = .;
     .bss :
@@ -98,7 +98,7 @@ SECTIONS
 
     _end = .;
 
-    /* Stabs debugging sections.  */
+    /* Stabs debugging sections. */
     .stab          0 : { *(.stab) }
     .stabstr       0 : { *(.stabstr) }
     .stab.excl     0 : { *(.stab.excl) }
