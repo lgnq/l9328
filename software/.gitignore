@@ -1,4 +1,5 @@
 */build
+*/settings
 *.dep
 *.bin
 *.map
@@ -23,3 +24,5 @@
 project.uvproj
 project.uvopt
 project.uvgui.*
+project.eww
+project.ewp
