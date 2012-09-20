@@ -2071,7 +2071,7 @@
   <group>
     <name>Components</name>
     <file>
-      <name>$PROJ_DIR$\D:/rtthread/RTT/components/init\components_init.c</name>
+      <name>$PROJ_DIR$\D:/rtthread/RTT/components/init\components.c</name>
     </file>
   </group>
 </project>

@@ -22,7 +22,7 @@
 #include <rtthread.h>
 
 #ifdef RT_USING_COMPONENTS_INIT
-#include <components_init.h>
+#include <components.h>
 #endif
 
 #include "led.h"
